@@ -25,5 +25,9 @@ namespace SethBlog.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; } //nullable because it will initially be null
+        
+        //navigational properties
+        //Virtual allows for lazy loading (instead of eager)
+        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
     }
 }

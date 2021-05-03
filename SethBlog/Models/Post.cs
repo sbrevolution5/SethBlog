@@ -35,5 +35,7 @@ namespace SethBlog.Models
         [Display(Name ="Post State")]
         public PostState PostState { get; set; }
 
+        //navigational property
+        public virtual Blog Blog { get; set; }
     }
 }
