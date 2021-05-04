@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SethBlog.Data;
 using SethBlog.Models;
+using SethBlog.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace SethBlog
             services.AddControllersWithViews();
 
             services.AddRazorPages();
+            //services.AddScoped<IImageService, BasicImageService>();
 
         }
 
