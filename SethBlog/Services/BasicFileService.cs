@@ -10,6 +10,7 @@ namespace SethBlog.Services
 {
     public class BasicFileService : IFileService
     {
+        private const int DefaultMaxFileSize = (2 * 1024 * 1024); // 2 mb
         public string DecodeFile(byte[] file, string contentType)
         {
             //check if this is null, if so return null
@@ -41,8 +42,11 @@ namespace SethBlog.Services
             using var ms = new MemoryStream();
             await file.CopyToAsync(ms);
             return ms.ToArray();
-
-
+        }
+        public async Task<byte[]> EncodeFileAsync(string filename)
+        {
+            var file = $"{Directory.GetCurrentDirectory()}/wwwroot/img/{filename}";
+            return await File.ReadAllBytesAsync(file);
         }
 
         public string RecordContentType(IFormFile image)
@@ -54,15 +58,13 @@ namespace SethBlog.Services
             return image.ContentType;
         }
 
-        public Task<byte[]> EncodeFileAsync(string filename)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public bool ValidateFileType(IFormFile file)
         {
-            throw new NotImplementedException();
+            var authorizedTypes = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
+            var validExt = authorizedTypes.Contains(RecordContentType(file));
+            return validExt;
         }
 
         public bool ValidateFileType(IFormFile file, List<string> fileTypes)
@@ -72,16 +74,16 @@ namespace SethBlog.Services
 
         public bool ValidateFileSize(IFormFile file)
         {
-            throw new NotImplementedException();
+            return Size(file) < DefaultMaxFileSize;
         }
 
         public bool ValidateFileSize(IFormFile file, int maxSize)
         {
-            throw new NotImplementedException();
+            return Size(file) < maxSize;
         }
         public int Size(IFormFile file)
         {
-            throw new NotImplementedException();
+            return Convert.ToInt32(file?.Length);
         }
     }
 }

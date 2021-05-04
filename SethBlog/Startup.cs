@@ -42,7 +42,7 @@ namespace SethBlog
             services.AddControllersWithViews();
 
             services.AddRazorPages();
-            //services.AddScoped<IImageService, BasicImageService>();
+            services.AddScoped<IFileService, BasicFileService>();
 
         }
 
