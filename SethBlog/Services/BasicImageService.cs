@@ -44,6 +44,10 @@ namespace SethBlog.Services
 
 
         }
+        public Task<byte[]> EncodeImageAsync(string filename)
+        {
+            throw new NotImplementedException();
+        }
 
         public string RecordContentType(IFormFile image)
         {
@@ -53,5 +57,6 @@ namespace SethBlog.Services
             }
             return image.ContentType;
         }
+
     }
 }

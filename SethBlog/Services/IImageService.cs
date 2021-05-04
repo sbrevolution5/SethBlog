@@ -14,6 +14,10 @@ namespace SethBlog.Services
         /// <param name="image">Image from form</param>
         /// <returns>byte array of image</returns>
         Task<byte[]> EncodeImageAsync(IFormFile image);
+        //overload using filename from local server.
+        //used for default image
+
+        Task<byte[]> EncodeImageAsync(string filename);
 
         //encode an image from a URL
         Task<byte[]> EncodeImageURLAsync(string imageURL);
