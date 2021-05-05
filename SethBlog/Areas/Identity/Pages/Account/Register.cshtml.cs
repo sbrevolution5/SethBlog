@@ -103,6 +103,10 @@ namespace SethBlog.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+
+                var justExtension = Path.GetExtension(_configuration["DefaultUserImage"]);
+                justExtension = justExtension.TrimStart('.');
+
                 var user = new BlogUser
                 {
                     FirstName = Input.FirstName,
@@ -111,7 +115,9 @@ namespace SethBlog.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     ImageData = (await _fileService.EncodeFileAsync(Input.ImageFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
-                    ContentType = Input.ImageFile is null ? Path.GetExtension(_configuration["DefaultUserImage"]) : _fileService.RecordContentType(Input.ImageFile)
+                    ContentType = Input.ImageFile is null ? 
+                        $"image/{justExtension}" : 
+                        _fileService.RecordContentType(Input.ImageFile)
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

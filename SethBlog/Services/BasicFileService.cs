@@ -18,8 +18,8 @@ namespace SethBlog.Services
             {
                 return null;
             }
-            var imageString = Convert.ToBase64String(file);
-            return $"data:image/{contentType};base64,{imageString}";
+            var fileString = Convert.ToBase64String(file);
+            return $"data:{contentType};base64,{fileString}"; // contentType needs image/png etc.  it isn't hardcoded so it is more generic.
         }
 
         public async Task<byte[]> EncodeFileURLAsync(string fileURL)
@@ -62,7 +62,7 @@ namespace SethBlog.Services
 
         public bool ValidateFileType(IFormFile file)
         {
-            var authorizedTypes = new List<string> { ".jpg", ".jpeg", ".png", ".gif" };
+            var authorizedTypes = new List<string> { "jpg", "jpeg", "png", "gif" };
             var validExt = authorizedTypes.Contains(RecordContentType(file));
             return validExt;
         }
