@@ -97,9 +97,14 @@ namespace SethBlog.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
-            user.ImageData = await _fileService.EncodeFileAsync(Input.ImageFile);
-            user.ContentType = _fileService.RecordContentType(Input.ImageFile);
+            if(Input.ImageFile is not null)
+            {
 
+                user.ImageData = await _fileService.EncodeFileAsync(Input.ImageFile);
+                user.ContentType = _fileService.RecordContentType(Input.ImageFile);
+                //MUST SAVE USER TO DATABASE
+                await _userManager.UpdateAsync(user);
+            }
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
