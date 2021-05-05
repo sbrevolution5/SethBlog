@@ -14,12 +14,12 @@ namespace SethBlog.Services
         public string DecodeFile(byte[] file, string contentType)
         {
             //check if this is null, if so return null
-            if(file == null)
+            if(file == null || contentType == null)
             {
                 return null;
             }
             var imageString = Convert.ToBase64String(file);
-            return $"data:{contentType};base64,{imageString}";
+            return $"data:image/{contentType};base64,{imageString}";
         }
 
         public async Task<byte[]> EncodeFileURLAsync(string fileURL)
