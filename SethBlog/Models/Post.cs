@@ -34,11 +34,15 @@ namespace SethBlog.Models
         //i.e. ready, published, draft
         [Display(Name ="Post State")]
         public PostState PostState { get; set; }
-        
+        [Display(Name ="Estimated Minutes To Read")]
+        public string ReadTime { get; set; }
+
         //image data
+        [Display(Name ="Post Image")]
         public byte[] PostImage { get; set; }
         public string ContentType { get; set; }
         //navigational property
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual Blog Blog { get; set; }
     }
 }

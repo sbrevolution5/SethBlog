@@ -19,10 +19,11 @@ namespace SethBlog.Controllers
         private readonly IFileService _fileService;
         private readonly IConfiguration _configuration;
 
-        public PostsController(ApplicationDbContext context, IFileService fileService)
+        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration)
         {
             _context = context;
             _fileService = fileService;
+            _configuration = configuration;
         }
         //GET: Posts of one blog
         public async Task<ActionResult> BlogPostIndex(int? id)
@@ -74,7 +75,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PostState")] Post post, IFormFile customFile)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadTime,PostState")] Post post, IFormFile customFile)
         {
             if (ModelState.IsValid)
             {
@@ -83,7 +84,7 @@ namespace SethBlog.Controllers
                 post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
@@ -111,7 +112,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,PostState")] Post post,IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,PostState,ReadTime")] Post post,IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -142,7 +143,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
             return View(post);
