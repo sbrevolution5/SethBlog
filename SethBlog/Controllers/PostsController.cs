@@ -84,7 +84,7 @@ namespace SethBlog.Controllers
                 post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), "Home");
+                return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
@@ -143,6 +143,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
+                return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
                 return RedirectToAction(nameof(Index), "Home");
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
