@@ -149,6 +149,34 @@ namespace SethBlog.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("SethBlog.Models.Blog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Blog");
+                });
+
             modelBuilder.Entity("SethBlog.Models.BlogUser", b =>
                 {
                     b.Property<string>("Id")
@@ -230,6 +258,49 @@ namespace SethBlog.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("SethBlog.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Abstract")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("BlogId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("PostState")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.ToTable("Post");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -279,6 +350,22 @@ namespace SethBlog.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SethBlog.Models.Post", b =>
+                {
+                    b.HasOne("SethBlog.Models.Blog", "Blog")
+                        .WithMany("Posts")
+                        .HasForeignKey("BlogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Blog");
+                });
+
+            modelBuilder.Entity("SethBlog.Models.Blog", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

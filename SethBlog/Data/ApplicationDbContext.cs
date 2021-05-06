@@ -13,5 +13,6 @@ namespace SethBlog.Data
             : base(options)
         {
         }
+        public DbSet<SethBlog.Models.Blog> Blog { get; set; }
     }
 }

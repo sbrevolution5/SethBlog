@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SethBlog</title>
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-grid.css" />
+    <link rel="stylesheet" href="~/css/bootstrap-reboot.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/572208ba81.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/theme-8.css" />
+
+</head>
+<body>
+
+
+    <header class="header text-center">
+        <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">Seth's Blog</a></h1>
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="navigation" class="collapse navbar-collapse flex-column">
+                <div class="profile-section pt-3 pt-lg-0">
+                    <img class="profile-image mb-3 rounded-circle mx-auto" src="~/img/profile-img.jpg" alt="image">
+
+                    <div class="bio mb-3">Welcome to Seth's Blog.<br><a href="about.html">Find out more about me</a></div><!--//bio-->
+                    <ul class="social-list list-inline py-3 mx-auto">
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-github-alt fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-stack-overflow fa-fw"></i></a></li>
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-codepen fa-fw"></i></a></li>
+                    </ul><!--//social-list-->
+                    <hr>
+                </div><!--//profile-section-->
+
+                <ul class="navbar-nav flex-column text-left">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                    <partial name="_LoginPartial" />
+                </ul>
+
+                <div class="my-2 my-md-3">
+                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Get in Touch</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-wrapper">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-center py-2 theme-bg-dark">
+
+        <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+        <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by SethBlog</small>
+
+    </footer>
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

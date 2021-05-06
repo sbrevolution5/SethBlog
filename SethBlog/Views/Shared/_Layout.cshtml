@@ -1,18 +1,29 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SethBlog</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    @* FontAwesome JS *@
-    <script defer src="assets/fontawesome/js/all.min.js"></script>
-    <link rel="stylesheet" href="~/css/theme-8.css" />
+
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Seth's Blog">
+    <meta name="author" content="Seth A. Burleson">
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- FontAwesome JS-->
+    <script defer src="~/fontawesome/js/all.min.js"></script>
+
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="~/css/theme-8.css">
+
 </head>
+
 <body>
+
     <header class="header text-center">
-        <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">Anthony's Blog</a></h1>
+        <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">Seth's Blog</a></h1>
 
         <nav class="navbar navbar-expand-lg navbar-dark">
 
@@ -22,9 +33,9 @@
 
             <div id="navigation" class="collapse navbar-collapse flex-column">
                 <div class="profile-section pt-3 pt-lg-0">
-                    <img class="profile-image mb-3 rounded-circle mx-auto" src="assets/images/profile.png" alt="image">
+                    <img class="profile-image mb-3 rounded-circle mx-auto" src="~/img/profile-img.jpg" alt="image">
 
-                    <div class="bio mb-3">Hi, my name is Anthony Doe. Briefly introduce yourself here. You can also provide a link to the about page.<br><a href="about.html">Find out more about me</a></div><!--//bio-->
+                    <div class="bio mb-3">Welcome to Seth's Blog.<br><a href="about.html">Find out more about me</a></div><!--//bio-->
                     <ul class="social-list list-inline py-3 mx-auto">
                         <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
                         <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
@@ -35,30 +46,6 @@
                     <hr>
                 </div><!--//profile-section-->
 
-                <header class="header text-center">	    
-	    <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">Anthony's Blog</a></h1>
-        
-	    <nav class="navbar navbar-expand-lg navbar-dark" >
-           
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-			</button>
-
-			<div id="navigation" class="collapse navbar-collapse flex-column" >
-				<div class="profile-section pt-3 pt-lg-0">
-				    <img class="profile-image mb-3 rounded-circle mx-auto" src="assets/images/profile.png" alt="image" >			
-					
-                    <div class="bio mb-3">Welcome to Seth's Blog.<br><a href="about.html">Find out more about me</a></div><!--//bio-->
-					<ul class="social-list list-inline py-3 mx-auto">
-			            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>
-			            <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in fa-fw"></i></a></li>
-			            <li class="list-inline-item"><a href="#"><i class="fab fa-github-alt fa-fw"></i></a></li>
-			            <li class="list-inline-item"><a href="#"><i class="fab fa-stack-overflow fa-fw"></i></a></li>
-			            <li class="list-inline-item"><a href="#"><i class="fab fa-codepen fa-fw"></i></a></li>
-			        </ul><!--//social-list-->
-			        <hr> 
-				</div><!--//profile-section-->
-				
                 <ul class="navbar-nav flex-column text-left">
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
@@ -68,51 +55,29 @@
                     </li>
                     <partial name="_LoginPartial" />
                 </ul>
-				
-				<div class="my-2 my-md-3">
-				    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Get in Touch</a>
-				</div>
-			</div>
-		</nav>
-    </header>
 
                 <div class="my-2 my-md-3">
-                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Get in Touch</a>
+                    <a class="btn btn-primary" href="https://SethBCoding.com" target="_blank">Get in Touch</a>
                 </div>
             </div>
         </nav>
     </header>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SethBlog</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        
-                    </ul>
-                    
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <div class="main-wrapper">
+    @RenderBody()
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <footer class="footer text-center py-2 theme-bg-dark">
+
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+        <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by <a href="https://sethbcoding.com">Seth A. Burleson</a></small>
+
+        </footer>
+
+    </div><!--//main-wrapper-->
+    <!-- Javascript -->
+    <script src="~/js/jquery-3.4.1.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+
 </body>
 </html>
+
