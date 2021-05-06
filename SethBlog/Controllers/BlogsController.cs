@@ -54,13 +54,15 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,Updated")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Blog blog)
         {
+            blog.Created = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Home");
+
             }
             return View(blog);
         }

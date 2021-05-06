@@ -48,13 +48,20 @@
 
                 <ul class="navbar-nav flex-column text-left">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-                    <partial name="_LoginPartial" />
-                </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
+                    </li>
+                </ul> 
+                <partial name="_LoginPartial" />
+                <hr />
 
                 <div class="my-2 my-md-3">
                     <a class="btn btn-primary" href="https://SethBCoding.com" target="_blank">Get in Touch</a>
@@ -63,20 +70,25 @@
         </nav>
     </header>
     <div class="main-wrapper">
-    @RenderBody()
+    <div class="container">
 
-        <footer class="footer text-center py-2 theme-bg-dark">
+        <main role="main" class="pb-3">
+            @RenderBody()
+            </main>
+    </div>
+            <footer class="footer text-center py-2 theme-bg-dark">
 
-            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-        <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by <a href="https://sethbcoding.com">Seth A. Burleson</a></small>
+                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+                <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by <a href="https://sethbcoding.com">Seth A. Burleson</a></small>
 
-        </footer>
+            </footer>
 
-    </div><!--//main-wrapper-->
+</div><!--//main-wrapper-->
     <!-- Javascript -->
     <script src="~/js/jquery-3.4.1.min.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>
