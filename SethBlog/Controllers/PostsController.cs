@@ -2,24 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
 using SethBlog.Models;
+using SethBlog.Services;
 
 namespace SethBlog.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFileService _fileService;
+        private readonly IConfiguration _configuration;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
+        //GET: Posts of one blog
+        public async Task<ActionResult> BlogPostIndex(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        // GET: Posts
+            var blogPosts = await _context.Post.Where(p => p.BlogId == id).ToListAsync();
+            return View(blogPosts);
+        }
+        // GET: All Posts
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Post.Include(p => p.Blog);
@@ -48,7 +64,8 @@ namespace SethBlog.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description");
+            //Syntax: (All data, One column [choosing], other column[for display])
+            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name");
             return View();
         }
 
@@ -57,15 +74,18 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,Slug,PostState")] Post post)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PostState")] Post post, IFormFile customFile)
         {
             if (ModelState.IsValid)
             {
+                post.Created = DateTime.Now;
+                post.PostImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
+                post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
 
@@ -91,7 +111,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,Updated,Slug,PostState")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,PostState")] Post post,IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -102,6 +122,12 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    post.Updated = DateTime.Now;
+                    if (NewImage is not null)
+                    {
+                        post.PostImage = await _fileService.EncodeFileAsync(NewImage);
+                        post.ContentType = _fileService.RecordContentType(NewImage);
+                    }
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

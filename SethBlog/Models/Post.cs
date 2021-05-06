@@ -34,7 +34,10 @@ namespace SethBlog.Models
         //i.e. ready, published, draft
         [Display(Name ="Post State")]
         public PostState PostState { get; set; }
-
+        
+        //image data
+        public byte[] PostImage { get; set; }
+        public string ContentType { get; set; }
         //navigational property
         public virtual Blog Blog { get; set; }
     }
