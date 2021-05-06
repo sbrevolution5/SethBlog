@@ -144,7 +144,6 @@ namespace SethBlog.Controllers
                     }
                 }
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
-                return RedirectToAction(nameof(Index), "Home");
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
             return View(post);
