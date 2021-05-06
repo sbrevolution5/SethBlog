@@ -14,5 +14,6 @@ namespace SethBlog.Data
         {
         }
         public DbSet<SethBlog.Models.Blog> Blog { get; set; }
+        public DbSet<SethBlog.Models.Post> Post { get; set; }
     }
 }
