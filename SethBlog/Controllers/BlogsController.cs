@@ -2,21 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SethBlog.Data;
 using SethBlog.Models;
+using SethBlog.Services;
 
 namespace SethBlog.Controllers
 {
     public class BlogsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IFileService _fileService;
 
-        public BlogsController(ApplicationDbContext context)
+        public BlogsController(ApplicationDbContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         // GET: Blogs
@@ -54,11 +58,14 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Blog blog)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Blog blog, IFormFile customFile)
         {
             blog.Created = DateTime.Now;
             if (ModelState.IsValid)
             {
+                blog.ContentType = _fileService.RecordContentType(customFile);
+                blog.BlogImage = await _fileService.EncodeFileAsync(customFile);
+
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "Home");
@@ -88,8 +95,9 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,Updated")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] Blog blog, IFormFile NewImage)
         {
+            blog.Updated = DateTime.Now;
             if (id != blog.Id)
             {
                 return NotFound();
@@ -99,6 +107,11 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    if (NewImage is not null)
+                    {
+                        blog.BlogImage = await _fileService.EncodeFileAsync(NewImage);
+                        blog.ContentType = _fileService.RecordContentType(NewImage);
+                    }
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }
@@ -113,7 +126,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),"Home");
             }
             return View(blog);
         }
