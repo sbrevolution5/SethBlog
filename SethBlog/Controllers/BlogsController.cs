@@ -64,9 +64,9 @@ namespace SethBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Blog blog, IFormFile customFile)
         {
-            blog.Created = DateTime.Now;
             if (ModelState.IsValid)
             {
+            blog.Created = DateTime.Now;
                 blog.BlogImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
                 blog.ContentType = customFile is null ? Path.GetExtension(_configuration["DefaultBlogImage"]) : _fileService.RecordContentType(customFile);
                 
@@ -101,7 +101,6 @@ namespace SethBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created")] Blog blog, IFormFile NewImage)
         {
-            blog.Updated = DateTime.Now;
             if (id != blog.Id)
             {
                 return NotFound();
@@ -111,6 +110,7 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    blog.Updated = DateTime.Now;
                     if (NewImage is not null)
                     {
                         blog.BlogImage = await _fileService.EncodeFileAsync(NewImage);
