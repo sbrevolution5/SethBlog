@@ -11,7 +11,7 @@ namespace SethBlog.Services
     public class BasicFileService : IFileService
     {
         private const int DefaultMaxFileSize = (2 * 1024 * 1024); // 2 mb
-        public string DecodeFile(byte[] file, string contentType)
+        public string DecodeFile(byte[] file, string contentType) //currently only works for images
         {
             //check if this is null, if so return null
             if(file == null || contentType == null)

@@ -68,8 +68,7 @@ namespace SethBlog.Controllers
             {
             blog.Created = DateTime.Now;
                 blog.BlogImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
-                blog.ContentType = customFile is null ? Path.GetExtension(_configuration["DefaultBlogImage"]) : _fileService.RecordContentType(customFile);
-                
+                blog.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "Home");

@@ -111,7 +111,7 @@ namespace SethBlog.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     Email = Input.Email,
                     ImageData = (await _fileService.EncodeFileAsync(Input.ImageFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
-                    ContentType = Input.ImageFile is null ? Path.GetExtension(_configuration["DefaultUserImage"]) : _fileService.RecordContentType(Input.ImageFile)
+                    ContentType = Input.ImageFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(Input.ImageFile)
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
