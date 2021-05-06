@@ -26,11 +26,8 @@
 
             <div class="item mb-5">
                 <div class="media">
-                    @if (blog.BlogImage is not null)
-                    {
-
-                <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@_fileService.DecodeFile(blog.BlogImage,blog.ContentType)" alt="image">
-                    }
+                        <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@_fileService.DecodeFile(blog.BlogImage,blog.ContentType)" alt="image">
+                    
                     <div class="media-body">
                         <h3 class="title mb-1"><a href="blog-post.html">@blog.Name</a></h3>
                         <div class="meta mb-1"><span class="date">@blog.Created</span><span class="time">5 min read</span><span class="comment"><a href="#">8 comments</a></span></div>

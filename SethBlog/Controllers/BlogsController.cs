@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
 using SethBlog.Models;
 using SethBlog.Services;
@@ -16,11 +18,13 @@ namespace SethBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileService _fileService;
+        private readonly IConfiguration _configuration;
 
-        public BlogsController(ApplicationDbContext context, IFileService fileService)
+        public BlogsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration)
         {
             _context = context;
             _fileService = fileService;
+            _configuration = configuration;
         }
 
         // GET: Blogs
@@ -63,9 +67,9 @@ namespace SethBlog.Controllers
             blog.Created = DateTime.Now;
             if (ModelState.IsValid)
             {
-                blog.ContentType = _fileService.RecordContentType(customFile);
-                blog.BlogImage = await _fileService.EncodeFileAsync(customFile);
-
+                blog.BlogImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
+                blog.ContentType = customFile is null ? Path.GetExtension(_configuration["DefaultBlogImage"]) : _fileService.RecordContentType(customFile);
+                
                 _context.Add(blog);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), "Home");
