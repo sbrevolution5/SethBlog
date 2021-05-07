@@ -53,12 +53,12 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Create
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
 
         public IActionResult Create()
         {
             return View();
-        }
+        } 
 
         // POST: Blogs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -81,6 +81,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Edit/5
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -138,6 +139,8 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Delete/5
+        //[Authorize(Roles = "Administrator")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

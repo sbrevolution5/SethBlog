@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using SethBlog.Services;
 
 namespace SethBlog.Controllers
 {
+    //[Authorize(Roles="Administrator, Moderator")]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
