@@ -43,6 +43,8 @@ namespace SethBlog
 
             services.AddRazorPages();
             services.AddScoped<IFileService, BasicFileService>();
+            services.AddScoped<DataService>();
+
 
         }
 

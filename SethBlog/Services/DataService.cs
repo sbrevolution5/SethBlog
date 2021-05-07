@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
 using SethBlog.Enums;
+using SethBlog.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,17 @@ namespace SethBlog.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IFileService _fileService;
+        private readonly IConfiguration _configuration;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public DataService(ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public DataService(ApplicationDbContext context, RoleManager<IdentityRole> roleManager, IFileService fileService, IConfiguration configuration, UserManager<BlogUser> userManager)
         {
             _context = context;
             _roleManager = roleManager;
+            _fileService = fileService;
+            _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task ManageDataAsync()
@@ -42,7 +50,23 @@ namespace SethBlog.Services
         }
         private async Task SeedUsersAsync()
         {
-
+            if (_context.Users.Any())
+            {
+                return;
+            }
+            var adminUser = new BlogUser()
+            {
+                Email = "sethbcoding@gmail.com",
+                UserName = "sethbcoding@gmail.com",
+                FirstName = "Seth",
+                LastName = "Burleson",
+                PhoneNumber = "919-763-4059",
+                EmailConfirmed = true, //Has to be forced for the admin
+                ImageData = await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
+                ContentType = "png",
+            };
+            await _userManager.CreateAsync(adminUser, _configuration["AdminPassword"]);
+            await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
         }
     }
 }
