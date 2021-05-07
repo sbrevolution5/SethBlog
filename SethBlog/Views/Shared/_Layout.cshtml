@@ -11,7 +11,7 @@
     <meta name="description" content="Seth's Blog">
     <meta name="author" content="Seth A. Burleson">
     <link rel="shortcut icon" href="favicon.ico">
-
+    <link href="~/css/summernote-bs4.min.css" rel="stylesheet" />
     <!-- FontAwesome JS-->
     <script defer src="~/fontawesome/js/all.min.js"></script>
 
@@ -59,7 +59,7 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                     </li>
-                </ul> 
+                </ul>
                 <partial name="_LoginPartial" />
                 <hr />
 
@@ -70,28 +70,30 @@
         </nav>
     </header>
     <div class="main-wrapper">
-    <div class="container">
+        <div class="container">
 
-        <main role="main" class="pb-3">
-            <section class="blog-list px-3 py-5 p-md-5">
-                <div class="container">
-                    @RenderBody()
+            <main role="main" class="pb-3">
+                <section class="blog-list px-3 py-5 p-md-5">
+                    <div class="container">
+                        @RenderBody()
                     </div>
                 </section>
-        </main>
-    </div>
+            </main>
+        </div>
 
-            <footer class="footer text-center py-2 theme-bg-dark">
+        <footer class="footer text-center py-2 theme-bg-dark">
 
-                <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-                <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by <a href="https://sethbcoding.com">Seth A. Burleson</a></small>
+            <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
+            <small class="copyright">&copy; 2021 - SethBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> Designed with <i class="fas fa-heart" style="color: #fb866a;"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers.  Template Edited by <a href="https://sethbcoding.com">Seth A. Burleson</a></small>
 
-            </footer>
-</div><!--//main-wrapper-->
+        </footer>
+    </div><!--//main-wrapper-->
     <!-- Javascript -->
     <script src="~/js/jquery-3.4.1.min.js"></script>
     <script src="~/js/popper.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/summernote-bs4.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
