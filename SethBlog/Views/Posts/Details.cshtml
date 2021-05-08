@@ -14,7 +14,7 @@
             @Html.DisplayNameFor(model => model.Abstract)
             <p class="lead"></p>
         <hr class="my-2">
-        <img src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)"/>
+        <img class="img-fluid" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)"/>
     </div>
     <hr />
     <dl class="row">
