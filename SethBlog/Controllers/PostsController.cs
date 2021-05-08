@@ -14,12 +14,12 @@ using SethBlog.Services;
 
 namespace SethBlog.Controllers
 {
-    //[Authorize(Roles="Administrator, Moderator")]
+    [Authorize(Roles = "Administrator, Moderator")]
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileService _fileService;
-        private readonly IConfiguration _configuration;
+        private readonly IConfiguration _configuration; 
 
         public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration)
         {
@@ -46,6 +46,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Posts/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

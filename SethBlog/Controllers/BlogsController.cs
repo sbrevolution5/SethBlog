@@ -53,7 +53,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Create
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
 
         public IActionResult Create()
         {
@@ -81,7 +81,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Edit/5
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -139,7 +139,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs/Delete/5
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
 
         public async Task<IActionResult> Delete(int? id)
         {

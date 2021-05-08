@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
 using SethBlog.Enums;
@@ -29,6 +30,8 @@ namespace SethBlog.Services
 
         public async Task ManageDataAsync()
         {
+            //prevent manual update database command
+            await _context.Database.MigrateAsync();
             //Task 1: Seed roles (create and enter into Authorization system
             await SeedRolesAsync();
             // Task 2 seed a few users into AspNetUsers
