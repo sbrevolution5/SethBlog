@@ -2,10 +2,10 @@
 @using SethBlog.Services
 @inject IFileService _fileService
 @{
-    ViewData["Title"] = "@Html.DisplayFor(model => model.Title)";
+    ViewData["Title"] = @Html.DisplayFor(model => model.Title);
 }
 
-<h1>Details</h1>
+@*<h1>Details</h1>
 
 <div>
     <h4></h4>
@@ -67,28 +67,28 @@
             @Html.DisplayFor(model => model.Blog.Description)
         </dd>
     </dl>
-</div>
+</div>*@
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
-<article class="blog-post px-3 py-5 p-md-5">
+<article class="blog-post px-3 py-3 p-md-3">
+    @if (User.IsInRole("Administrator")) {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
+                                                               }
+    <a asp-action="Index">Back to List</a>
     <div class="container">
         <header class="blog-post-header">
             <h2 class="title mb-2">@Model.Title</h2>
-            <div class="meta mb-3"><span class="date">Published @Model.Created</span><span class="time">5 min
-                    read</span><span class="comment"><a href="#">4 comments</a></span></div>
+            <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span>@if (Model.ReadTime is not null)
+            {
+                <span class="time">@Model.ReadTime min to read</span>
+            }
+            <span class="comment"><a href="#">@Model.Comments.Count comments</a></span>
+            <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)"
         </header>
 
         <div class="blog-post-body">
-            <figure class="blog-banner">
-                <a href="https://made4dev.com"><img class="img-fluid" src="assets/images/blog/blog-post-banner.jpg"
-                        alt="image"></a>
-                <figcaption class="mt-2 text-center image-caption">Image Credit: <a
-                        href="https://made4dev.com?ref=devblog" target="_blank">made4dev.com (Premium Programming
-                        T-shirts)</a></figcaption>
-            </figure>
-            </div>
+            @Html.Raw(Model.Content)
+        </div>
 
     </div>
     <!--//container-->

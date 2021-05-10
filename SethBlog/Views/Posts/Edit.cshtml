@@ -10,7 +10,7 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -35,7 +35,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea asp-for="Content" class="form-control" id="summernote"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -48,7 +48,7 @@
                 <select asp-for="PostState" class="form-control" asp-items="Html.GetEnumSelectList<PostState>();"></select>
                 <span asp-validation-for="PostState" class="text-danger"></span>
             </div>
-
+            @* TODO Add displayed image thumbnail size *@
             <div class="form-group">
                 <label asp-for="PostImage"></label>
                 <div class="custom-file">
