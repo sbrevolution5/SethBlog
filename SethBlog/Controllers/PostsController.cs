@@ -118,7 +118,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Abstract,Content,Created,PostState,ReadTime")] Post post,IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,PostImage,ContentType,Abstract,Content,Created,PostState,ReadTime")] Post post,IFormFile NewImage)
         {
             if (id != post.Id)
             {
