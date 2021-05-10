@@ -4,72 +4,6 @@
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Title);
 }
-
-@*<h1>Details</h1>
-
-<div>
-    <h4></h4>
-    <div class="jumbotron">
-        <h1 class="display-3">@Html.DisplayFor(model => model.Title)</h1>
-            @Html.DisplayNameFor(model => model.Abstract)
-            <p class="lead"></p>
-        <hr class="my-2">
-        <img class="img-fluid" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)"/>
-    </div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Abstract)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Abstract)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.Raw(Model.Content)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostState)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostState)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Blog)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Blog.Description)
-        </dd>
-    </dl>
-</div>*@
-<div>
-</div>
 <article class="blog-post px-3 py-3 p-md-3">
     @if (User.IsInRole("Administrator")) {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
@@ -83,7 +17,7 @@
                 <span class="time">@Model.ReadTime min to read</span>
             }
             <span class="comment"><a href="#">@Model.Comments.Count comments</a></span>
-            <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)"
+            <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" />
         </header>
 
         <div class="blog-post-body">
@@ -93,3 +27,5 @@
     </div>
     <!--//container-->
 </article>
+@* List Current comments *@
+@* Give Logged in users the ability to add a new comment *@
