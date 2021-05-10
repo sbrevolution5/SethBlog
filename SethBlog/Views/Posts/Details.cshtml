@@ -43,16 +43,18 @@ else
     <form asp-action="Create" asp-controller="Comments" method="POST">
         <div class="form-group">
             <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
-            <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5"></textarea>
+            <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5" required></textarea>
             <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
             <span asp-validation-for="PostState" class="text-danger"></span>@*ToDO fix validation*@
         </div>
     </form>
 }
 @* List Current comments *@
+<div class="comment-container">
+
 @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
 {
-    <div class="card shadow p-1 m-4">
+    <div class="card shadow p-1 m-4 mb-2">
         <div class="card-body">
             <div class="row">
 
@@ -84,5 +86,25 @@ else
 
 
         </div>
+        @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+        {
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col">
+
+                        <p>Moderation Options:</p>
+                    </div>
+                    <div class="col">
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-danger">Delete Comment</button>
+                            <button type="button" class="btn btn-sm btn-warning">Moderate Comment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
     </div>
 }
+</div>

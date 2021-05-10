@@ -1,5 +1,6 @@
 ﻿/*Sticky footer style*/
 .footer {
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
@@ -13,11 +14,18 @@
     max-height: 100px;
 }
 .main-wrapper {
-background-color:#e0e0e0;
+    background-color:#e0e0e0;
 }
-.form-control{
+.form-control, .form-control-file, .custom-file-input, .custom-file-label{
     background: #ededed;
+    background-color: #ededed;
 }
 .card{
     background: #ededed;
+}
+body{
+    background-color:#e0e0e0;
+}
+.comment-container{
+    padding-bottom: 20px;
 }
