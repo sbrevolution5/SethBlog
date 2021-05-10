@@ -28,6 +28,7 @@ namespace SethBlog.Controllers
             _configuration = configuration;
         }
         //GET: Posts of one blog
+        [AllowAnonymous]
         public async Task<ActionResult> BlogPostIndex(int? id)
         {
             if (id == null)
@@ -56,6 +57,8 @@ namespace SethBlog.Controllers
 
             var post = await _context.Post
                 .Include(p => p.Blog)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Author)//Acts on the previous include
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (post == null)
             {

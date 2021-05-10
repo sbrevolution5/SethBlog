@@ -5,9 +5,10 @@
     ViewData["Title"] = @Html.DisplayFor(model => model.Title);
 }
 <article class="blog-post px-3 py-3 p-md-3">
-    @if (User.IsInRole("Administrator")) {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> 
-                                                               }
+    @if (User.IsInRole("Administrator"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
     <div class="container">
         <header class="blog-post-header">
@@ -27,5 +28,37 @@
     </div>
     <!--//container-->
 </article>
-@* List Current comments *@
+<h2>Comments:</h2>
+<p class="text-muted">@Model.Comments.Count Comments </p>
 @* Give Logged in users the ability to add a new comment *@
+@* If user isn't logged in, prompt them to login so they can comment, then redirect them back to this page *@
+@if (!User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-block" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Details", "Posts" , new { id=Model.Id })">Login to add a comment</a>
+}
+else
+{
+//Allow user to create comment
+<h3>Leave a Comment:</h3>
+<form asp-action="Create" asp-controller="Comments" method="POST">
+    <div class="form-group">
+        <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
+        <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5"></textarea>
+        <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
+    </div>
+</form>
+}
+@* List Current comments *@
+<ul class="list-unstyled">
+    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+    {
+
+    <li class="media p-1">
+            <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
+        <div class="media-body">
+            <h5>@comment.Author.FullName <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span></h5>
+            <p>@comment.Body</p>
+        </div>
+    </li>
+    }
+  </ul>

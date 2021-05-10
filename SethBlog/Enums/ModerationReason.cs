@@ -8,6 +8,7 @@ namespace SethBlog.Enums
 {
     public enum ModerationReason
     {
+        None,//Unmoderated default
         Profanity,
         [Display(Name = "Sexual Content")]
         Sexual,

@@ -13,8 +13,8 @@ namespace SethBlog.Data
             : base(options)
         {
         }
-        public DbSet<SethBlog.Models.Blog> Blog { get; set; }
-        public DbSet<SethBlog.Models.Post> Post { get; set; }
-        public DbSet<SethBlog.Models.Comment> Comment { get; set; }
+        public DbSet<Blog> Blog { get; set; }
+        public DbSet<Post> Post { get; set; }
+        public DbSet<Comment> Comments { get; set; }
     }
 }
