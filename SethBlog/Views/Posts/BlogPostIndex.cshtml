@@ -6,6 +6,8 @@
 }
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
+        <h1>@ViewData["BlogName"]</h1>
+        <hr />
         @foreach (var post in Model)
         {
             <div class="item mb-5">

@@ -35,7 +35,7 @@ namespace SethBlog.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
             var blogPosts = await _context.Post.Where(p => p.BlogId == id).ToListAsync();
             return View(blogPosts);
         }
