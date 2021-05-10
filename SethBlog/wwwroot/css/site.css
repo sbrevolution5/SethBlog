@@ -12,3 +12,12 @@
     max-width: 100px;
     max-height: 100px;
 }
+.main-wrapper {
+background-color:#e0e0e0;
+}
+.form-control{
+    background: #ededed;
+}
+.card{
+    background: #ededed;
+}
