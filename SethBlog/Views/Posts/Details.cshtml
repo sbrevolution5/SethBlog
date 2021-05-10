@@ -7,17 +7,17 @@
 <article class="blog-post px-3 py-3 p-md-3">
     @if (User.IsInRole("Administrator"))
     {
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span>|</span>
     }
     <a asp-action="Index">Back to List</a>
     <div class="container">
         <header class="blog-post-header">
             <h2 class="title mb-2">@Model.Title</h2>
-            <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span>@if (Model.ReadTime is not null)
+            <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span> | @if (Model.ReadTime is not null)
             {
                 <span class="time">@Model.ReadTime min to read</span>
             }
-            <span class="comment"><a href="#">@Model.Comments.Count comments</a></span>
+            | <span class="comment"><a href="#">@Model.Comments.Count comments</a></span>
             <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" />
         </header>
 
@@ -45,6 +45,7 @@ else
         <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
         <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5"></textarea>
         <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
+        <span asp-validation-for="PostState" class="text-danger"></span>@*ToDO fix validation*@
     </div>
 </form>
 }
@@ -53,10 +54,10 @@ else
     @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
     {
 
-    <li class="media p-1">
+    <li class="media shadow p-2 m-1">
             <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
         <div class="media-body">
-            <h5>@comment.Author.FullName <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span></h5>
+            <h5>@comment.Author.FullName </h5><span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
             <p>@comment.Body</p>
         </div>
     </li>
