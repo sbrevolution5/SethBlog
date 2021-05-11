@@ -76,13 +76,14 @@ namespace SethBlog.Controllers
             var post = new Post();
             if (blogId is null)
             {
-            //Syntax: (All data, One column [choosing], other column[for display])
+                //Syntax: (All data, One column [choosing], other column[for display])
                 ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name");
-                
+
             }
             else
             {
                 post.BlogId = (int)blogId;
+                post.Blog = _context.Blog.Find(post.BlogId);
             }
             return View(post);
         }
@@ -109,7 +110,7 @@ namespace SethBlog.Controllers
                 else //if there is already a slug with that name: The user must change title.
                 {
                     ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
-                    ModelState.AddModelError("","Your title is not unique enough, there is another title that is similar.");
+                    ModelState.AddModelError("", "Your title is not unique enough, there is another title that is similar.");
                     return View(post);
                 }
                 _context.Add(post);
@@ -142,7 +143,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState,ReadTime")] Post post,IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState,ReadTime")] Post post, IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -159,15 +160,16 @@ namespace SethBlog.Controllers
                         post.PostImage = await _fileService.EncodeFileAsync(NewImage);
                         post.ContentType = _fileService.RecordContentType(NewImage);
                     }
-                    var newSlug= _slugService.UrlFriendly(post.Title);
-                    if (post.Slug !=newSlug)
+                    var newSlug = _slugService.UrlFriendly(post.Title);
+                    if (post.Slug != newSlug)
                     {
 
-                    if (!_slugService.IsUnique(newSlug))
-                    {
-                        ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
-                        return View(post);
-                    }
+                        if (!_slugService.IsUnique(newSlug))
+                        {
+                            ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
+                            return View(post);
+                        }
+                        post.Slug = newSlug;
                     }
                     _context.Update(post);
                     await _context.SaveChangesAsync();

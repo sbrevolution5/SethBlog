@@ -1,5 +1,7 @@
 ﻿@model SethBlog.Models.Post
 @using SethBlog.Enums
+@using SethBlog.Services
+@inject IFileService _fileService
 @{
     ViewData["Title"] = "Edit";
 }
@@ -49,6 +51,9 @@
                 <span asp-validation-for="PostState" class="text-danger"></span>
             </div>
             @* TODO Add displayed image thumbnail size *@
+            <div class="form-group">
+                <img src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" class="img-fluid comment-img" />
+            </div>
             <div class="form-group">
                 <label asp-for="PostImage"></label>
                 <div class="custom-file">
