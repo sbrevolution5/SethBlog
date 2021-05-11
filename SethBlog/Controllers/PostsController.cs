@@ -29,7 +29,7 @@ namespace SethBlog.Controllers
             _configuration = configuration;
             _slugService = slugService;
         }
-        //GET: Posts of one blog
+        //GET:All Posts of one blog
         [AllowAnonymous]
         public async Task<ActionResult> BlogPostIndex(int? id)
         {
@@ -39,6 +39,7 @@ namespace SethBlog.Controllers
             }
             ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
             var blogPosts = await _context.Post.Where(p => p.BlogId == id).ToListAsync();
+            ViewData["BlogId"] = id;
             return View(blogPosts);
         }
         // GET: All Posts

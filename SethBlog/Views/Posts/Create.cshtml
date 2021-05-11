@@ -5,8 +5,15 @@
 }
 
 <h1>Create</h1>
+@if (Model.BlogId > 0)
+{
+    <h4>New Post for: @Model.Blog.Name</h4>
+}
+else
+{
 
-<h4>Post</h4>
+    <h4>Post</h4>
+}
 <hr />
 <div class="row">
     <div class="col-md-12">
@@ -14,15 +21,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (Model.BlogId > 0)
             {
-                 <input type="hidden" asp-for="BlogId" />//TODO FIX
-                <h3>New Post for: @Model.Blog.Name</h3>
+                <input type="hidden" asp-for="BlogId" />
             }
             else
             {
-            <div class="form-group">
-                <label asp-for="BlogId" class="control-label"></label>
-                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
-            </div>
+                <div class="form-group">
+                    <label asp-for="BlogId" class="control-label"></label>
+                    <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
+                </div>
             }
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -71,10 +77,10 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-// Add the following code if you want the name of the file appear on select
-$(".custom-file-input").on("change", function() {
-  var fileName = $(this).val().split("\\").pop();
-  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-});
+        // Add the following code if you want the name of the file appear on select
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
     </script>
 }
