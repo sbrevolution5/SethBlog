@@ -44,6 +44,7 @@ namespace SethBlog
             services.AddRazorPages();
             services.AddScoped<IFileService, BasicFileService>();
             services.AddScoped<DataService>();
+            services.AddScoped<BasicSlugService>();
 
 
         }
@@ -72,6 +73,10 @@ namespace SethBlog
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "slugRoute",
+                    pattern: "Posts/ViewPost/{slug}",
+                    defaults: new { controller = "Posts", action = "Details" });
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

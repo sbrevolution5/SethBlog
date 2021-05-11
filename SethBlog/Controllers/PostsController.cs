@@ -19,13 +19,15 @@ namespace SethBlog.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IFileService _fileService;
-        private readonly IConfiguration _configuration; 
+        private readonly IConfiguration _configuration;
+        private readonly BasicSlugService _slugService;
 
-        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration)
+        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration, BasicSlugService slugService)
         {
             _context = context;
             _fileService = fileService;
             _configuration = configuration;
+            _slugService = slugService;
         }
         //GET: Posts of one blog
         [AllowAnonymous]
@@ -48,9 +50,9 @@ namespace SethBlog.Controllers
 
         // GET: Posts/Details/5
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)//Takes slug, not id
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -59,7 +61,7 @@ namespace SethBlog.Controllers
                 .Include(p => p.Blog)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Author)//Acts on the previous include
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
                 return NotFound();
@@ -69,11 +71,20 @@ namespace SethBlog.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public IActionResult Create(int? blogId)
         {
+            var post = new Post();
+            if (blogId is null)
+            {
             //Syntax: (All data, One column [choosing], other column[for display])
-            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name");
-            return View();
+                ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name");
+                
+            }
+            else
+            {
+                post.BlogId = (int)blogId;
+            }
+            return View(post);
         }
 
         // POST: Posts/Create
@@ -88,6 +99,19 @@ namespace SethBlog.Controllers
                 post.Created = DateTime.Now;
                 post.PostImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
                 post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
+
+                //Slug stuff
+                var slug = _slugService.UrlFriendly(post.Title);
+                if (_slugService.IsUnique(slug))
+                {
+                    post.Slug = slug;
+                }
+                else //if there is already a slug with that name: The user must change title.
+                {
+                    ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
+                    ModelState.AddModelError("","Your title is not unique enough, there is another title that is similar.");
+                    return View(post);
+                }
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
@@ -118,7 +142,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,PostImage,ContentType,Abstract,Content,Created,PostState,ReadTime")] Post post,IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState,ReadTime")] Post post,IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -134,6 +158,16 @@ namespace SethBlog.Controllers
                     {
                         post.PostImage = await _fileService.EncodeFileAsync(NewImage);
                         post.ContentType = _fileService.RecordContentType(NewImage);
+                    }
+                    var newSlug= _slugService.UrlFriendly(post.Title);
+                    if (post.Slug !=newSlug)
+                    {
+
+                    if (!_slugService.IsUnique(newSlug))
+                    {
+                        ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
+                        return View(post);
+                    }
                     }
                     _context.Update(post);
                     await _context.SaveChangesAsync();

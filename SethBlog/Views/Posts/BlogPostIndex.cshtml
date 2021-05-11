@@ -1,12 +1,16 @@
 ﻿@using SethBlog.Services
 @inject IFileService _fileService
-@model IEnumerable<Post> 
+@model IEnumerable<Post>
 @{
     ViewData["Title"] = "Blog posts";
 }
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
         <h1>@ViewData["BlogName"]</h1>
+        @if (User.IsInRole("Administrator"))
+        {
+            <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault().BlogId">Create New</a>
+        }
         <hr />
         @foreach (var post in Model)
         {
@@ -37,4 +41,4 @@
 
 
     </div>
-    </section>
+</section>

@@ -20,6 +20,10 @@
     background: #ededed;
     background-color: #ededed;
 }
+.form-control{
+    padding-top:0;
+    padding-bottom: 0;
+}
 .card{
     background: #ededed;
 }
