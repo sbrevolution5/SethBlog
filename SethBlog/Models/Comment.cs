@@ -27,5 +27,8 @@ namespace SethBlog.Models
         public virtual BlogUser Moderator { get; set; }
         public virtual Post Post { get; set; }
         public virtual BlogUser Author { get; set; }
+        //TODO add a "seen" property that handles whether a moderator has examined comment or not.  
+        // Used for eventual moderator dashboard
+
     }
 }
