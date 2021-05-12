@@ -16,9 +16,9 @@
                     
                     <div class="media-body">
                         <h3 class="title mb-1"><a href="blog-post.html">@blog.Name</a></h3>
-                        <div class="meta mb-1"><span class="date">@blog.Created.ToString("MMM dd, yyyy")</span><span class="time">5 min read</span><span class="comment"><a href="#">8 comments</a></span></div>
+                        <div class="meta mb-1"><span class="date">@blog.Created.ToString("MMM dd, yyyy")</span><span class="comment"><a>@blog.Posts.Count Posts</a></span></div>
                         <div class="intro">@blog.Description</div>
-                        <a name="" class="btn btn-primary btn-dark" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id" role="button">See Posts</a>
+                        <a name="" class="btn btn-primary btn-dark" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id" role="button">See @blog.Posts.Count Posts</a>
                     </div><!--//media-body-->
                 </div><!--//media-->
             </div><!--//item-->

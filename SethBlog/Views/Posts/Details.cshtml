@@ -39,6 +39,8 @@
 else
 {
     //Allow user to create comment
+    <div class="m-4">
+
     <h3>Leave a Comment:</h3>
     <form asp-action="Create" asp-controller="Comments" method="POST">
         <div class="form-group">
@@ -48,6 +50,7 @@ else
             <span asp-validation-for="PostState" class="text-danger"></span>@*ToDO fix validation*@
         </div>
     </form>
+    </div>
 }
 @* List Current comments *@
 <div class="comment-container">

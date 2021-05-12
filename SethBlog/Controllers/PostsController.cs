@@ -38,8 +38,9 @@ namespace SethBlog.Controllers
                 return NotFound();
             }
             ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
-            var blogPosts = await _context.Post.Where(p => p.BlogId == id).ToListAsync();
+            var blogPosts = await _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToListAsync();
             ViewData["BlogId"] = id;
+            //TODO send comment counts for each post.
             return View(blogPosts);
         }
         // GET: All Posts

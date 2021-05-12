@@ -57,15 +57,18 @@ namespace SethBlog.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
+                var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+                var slug = post.Slug;
             if (ModelState.IsValid)
             {
                 comment.Created = DateTime.Now;
                 comment.AuthorId = _userManager.GetUserId(User);
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details","Posts",new { id= comment.PostId});
+                return RedirectToAction("Details", "Posts", new { Slug = slug });
+
             }
-            return RedirectToAction("Details", "Posts", new { id = comment.PostId });
+            return RedirectToAction("Details", "Posts", new { Slug = slug });
         }
 
         // GET: Comments/Edit/5
