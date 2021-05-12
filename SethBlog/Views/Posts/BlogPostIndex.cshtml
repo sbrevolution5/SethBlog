@@ -1,52 +1,88 @@
 ﻿@using SethBlog.Services
 @inject IFileService _fileService
 @model IEnumerable<Post>
-@{
+    @{
     ViewData["Title"] = "Blog posts";
-}
-<section class="blog-list px-3 py-5 p-md-5">
-    <div class="container">
-        <h1>@ViewData["BlogName"]</h1>
-        @if (Model.Count() == 0)
-        {
+    }
+    <section class="blog-list px-3 py-5 p-md-5">
+        <div class="container">
+            <h1>@ViewData["BlogName"]</h1>
+            @if (Model.Count() == 0)
+            {
             <h4>Looks like this blog has no posts yet</h4>
-            <a asp-action="Create" asp-route-blogId="@ViewData["BlogId"]">Create New</a>
-        }
-        else
-        {
+            <a asp-action="Create" asp-route-blogId="@ViewData[" BlogId"]">Create New</a>
+            }
+            else
+            {
             @if (User.IsInRole("Administrator"))
             {
-                <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a>
+            <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a>
             }
             <hr />
             @foreach (var post in Model)
             {
-                <div class="item mb-5">
-                    <div class="media">
+                @*<div class="card shadow m-3">
+                <div class="row">
+                    <div class="col">
                         <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
                              src="@_fileService.DecodeFile(post.PostImage,post.ContentType)" alt="image">
-                        <div class="media-body">
-                            <h3 class="title mb-1"><a href="blog-post.html">@post.Title</a></h3>
-                            <div class="meta mb-1">
-                                <span class="date">@post.Created.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not null)
-                                {
-                                    <span class="time">@post.ReadTime min to read</span>
-                                }
-                                <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
-                            </div>
-                            <div class="intro">
-                                @post.Abstract
-                            </div>
-                            <a class="more-link" asp-controller="Posts" asp-action="Details" asp-route-slug="@post.Slug">Read more &rarr;</a>
-                        </div>
-                        <!--//media-body-->
                     </div>
-                    <!--//media-->
+                    <div class="col">
+                        <div class="row">
+                            <h3 class="title mb-1"><a href="blog-post.html">@post.Title</a></h3>
+
+                        </div>
+                        <div class="row">
+                            <span class="date">@post.Created.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not
+null)
+                            {
+                                <span class="time">@post.ReadTime min to read</span>
+                            }
+                            <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="intro">
+                                    @post.Abstract
+                                </div>
+                            </div>
+                            <div class="col">
+                                <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
+                                   asp-route-slug="@post.Slug">Read more &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <!--//item-->
-            }
+            </div>*@
+            <div class="item p-2">
+                <div class="media">
+                    <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
+                        src="@_fileService.DecodeFile(post.PostImage,post.ContentType)" alt="image">
+                    <div class="media-body">
+                        <h3 class="title mb-1"><a href="blog-post.html">@post.Title</a></h3>
+                        <div class="meta mb-1">
+                            <span class="date">@post.Created.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not
+                            null)
+                            {
+                            <span class="time">@post.ReadTime min to read</span>
+                            }
+                            <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
+                        </div>
+                        <div class="intro">
+                            @post.Abstract
+                        </div>
+                        <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
+                            asp-route-slug="@post.Slug">Read more &rarr;</a>
+                    </div>
+                    <!--//media-body-->
+                </div>
+                <!--//media-->
+            </div>
+            <!--//item-->
+        
+        }
 
 
         }
-    </div>
-</section>
+        </div>
+    </section>

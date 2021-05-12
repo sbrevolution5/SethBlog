@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace SethBlog.Controllers
 {
@@ -22,10 +23,15 @@ namespace SethBlog.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            //load view with all blogs
-            var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Refactor count into service TODO
+            //handles case of no page given, in that case give it the first page.
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+
+            var allBlogs = await _context.Blog.OrderByDescending(b=>b.Created).Include(b => b.Posts).ToPagedListAsync(pageNumber,pageSize);
+            //load view with all blogs (removed when paging added)
+            //var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Refactor count into service TODO
             return View(allBlogs);
         }
 
