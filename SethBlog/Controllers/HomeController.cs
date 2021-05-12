@@ -25,7 +25,7 @@ namespace SethBlog.Controllers
         public async Task<IActionResult> Index()
         {
             //load view with all blogs
-            var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Turn count into service TODO
+            var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Refactor count into service TODO
             return View(allBlogs);
         }
 

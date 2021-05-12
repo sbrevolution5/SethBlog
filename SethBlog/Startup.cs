@@ -47,6 +47,7 @@ namespace SethBlog
             services.AddScoped<DataService>();
             services.AddScoped<BasicSlugService>();
             services.AddScoped<IEmailSender, GmailEmailService>();
+            services.AddScoped<SearchService>();
 
 
         }
