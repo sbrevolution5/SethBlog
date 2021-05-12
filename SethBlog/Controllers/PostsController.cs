@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
 using SethBlog.Models;
 using SethBlog.Services;
+using X.PagedList;
 
 namespace SethBlog.Controllers
 {
@@ -21,13 +22,15 @@ namespace SethBlog.Controllers
         private readonly IFileService _fileService;
         private readonly IConfiguration _configuration;
         private readonly BasicSlugService _slugService;
+        private readonly SearchService _searchService;
 
-        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration, BasicSlugService slugService)
+        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration, BasicSlugService slugService, SearchService searchService)
         {
             _context = context;
             _fileService = fileService;
             _configuration = configuration;
             _slugService = slugService;
+            _searchService = searchService;
         }
         //GET:All Posts of one blog
         [AllowAnonymous]
@@ -48,6 +51,19 @@ namespace SethBlog.Controllers
         {
             var applicationDbContext = _context.Post.Include(p => p.Blog);
             return View(await applicationDbContext.ToListAsync());
+        }
+        //Post: Search results
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<IActionResult> SearchIndex(string searchString, int? page) 
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+            ViewData["SearchString"] = searchString;
+            // get results from our search service.
+            var posts = await _searchService.SearchContent(searchString).ToPagedListAsync(pageNumber,pageSize);
+            //posts = await posts.ToListAsync();
+            return View(posts);
         }
 
         // GET: Posts/Details/5

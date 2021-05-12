@@ -25,7 +25,7 @@ namespace SethBlog.Services
             //Use Linq to search all posts
             var result = _context.Post.Where(p => p.PostState == Enums.PostState.Published);
             //if no user input, return ALL posts
-            if (string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
             
             //narrow down results

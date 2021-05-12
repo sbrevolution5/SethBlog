@@ -73,6 +73,17 @@
                 <div class="my-2 my-md-3">
                     <a class="btn btn-primary" href="https://SethBCoding.com" target="_blank">Get in Touch</a>
                 </div>
+                <hr />
+                <form asp-action="SearchIndex" asp-controller="Posts">
+                    <div class="form-group input-group">
+                      <input type="text"
+                        class="form-control" name="SearchString" id="" aria-describedby="helpId" placeholder="Search...">
+                        <div class="input-group-append">
+
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </nav>
     </header>
