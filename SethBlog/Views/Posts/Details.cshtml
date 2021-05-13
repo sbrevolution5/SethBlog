@@ -1,6 +1,9 @@
 ﻿@model SethBlog.Models.Post
 @using SethBlog.Services
+@using Microsoft.AspNetCore.Identity
+@using SethBlog.Enums
 @inject IFileService _fileService
+@inject UserManager<BlogUser> _userManager
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Title);
 }
@@ -41,73 +44,145 @@ else
     //Allow user to create comment
     <div class="m-4">
 
-    <h3>Leave a Comment:</h3>
-    <form asp-action="Create" asp-controller="Comments" method="POST">
-        <div class="form-group">
-            <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
-            <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5" required></textarea>
-            <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
-            <span asp-validation-for="PostState" class="text-danger"></span>@*ToDO fix validation*@
-        </div>
-    </form>
+        <h3>Leave a Comment:</h3>
+        <form asp-action="Create" asp-controller="Comments" method="POST">
+            <div class="form-group">
+                <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
+                <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5" required></textarea>
+                <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
+                <span asp-validation-for="PostState" class="text-danger"></span>@*TODO fix validation*@
+            </div>
+        </form>
     </div>
 }
 @* List Current comments *@
 <div class="comment-container">
 
-@foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
-{
-    <div class="card shadow p-1 m-4 mb-2">
-        <div class="card-body">
-            <div class="row">
+    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+    {
+        <div class="card shadow p-1 m-4 mb-2">
+            <div class="card-body">
+                <div class="row">
 
-                <div class="col-2">
-                    <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
-                </div>
-                <div class="col-10">
-                    <div class="row">
+                    <div class="col-2">
+                        <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
+                    </div>
+                    <div class="col-10">
+                        <div class="row">
 
-                        <div class="col-7">
+                            <div class="col-7">
 
-                            <h4 class="card-title">
-                                @comment.Author.FullName
-                            </h4>
+                                <h4 class="card-title">
+                                    @comment.Author.FullName
+                                </h4>
+                            </div>
+                            <div class="col-5 text-right">
+                                <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
+                            </div>
                         </div>
-                        <div class="col-5 text-right">
+                        <div class="row">
+                            <div class="col">
+                                @if (comment.ModeratedBody is not null)
+                                {
+                                    <p class="card-text">@comment.ModeratedBody</p>
+                                    <p class="text-muted">This comment was moderated because of @comment.ModerationReason</p>
+                                }
+                                else
+                                {
 
-                            <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
+                                    <p class="card-text">@comment.Body</p>
+                                }
+                            </div>
                         </div>
                     </div>
+                </div>
+
+
+            </div>
+            @if (User.IsInRole("Moderator") || User.IsInRole("Administrator") || (comment.Moderated is null && _userManager.GetUserId(User) == comment.AuthorId))
+            {
+                <div class="card-footer">
                     <div class="row">
                         <div class="col">
+                            @* TODO this is not correct if user is not a moderator/administrator *@
+                            <p>Moderation Options:</p>
+                        </div>
+                        <div class="col">
 
-                            <p class="card-text">@comment.Body</p>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
+                                        data-target="#edit-@comment.Id">
+                                    Edit Comment
+                                </button>
+                                @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+                    {
+
+                                <button type="button" class="btn btn-sm btn-success" > Mark as Reviewed</button>
+                    }
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <!-- Modal -->
+                <div class="modal fade" id="edit-@comment.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
+                            <div class="modal-body">
+                                <form asp-controller="Comments" asp-action="Edit">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <input type="hidden" value="@comment.Id" name="id" />
+                                    <input type="hidden" asp-for="@comment.Id" />
+                                    <input type="hidden" asp-for="@comment.PostId" />
+                                    <input type="hidden" asp-for="@comment.AuthorId" />
+                                    <input type="hidden" asp-for="@comment.ModeratorId" />
+                                    <input type="hidden" asp-for="@comment.Created" />
+                                    <input type="hidden" asp-for="@comment.Created" />
+                                    @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+                                    {
+                                        <div class="form-group">
+
+                                            <label class="control-label">Original Body</label>
+                                            <textarea readonly="readonly" class="form-control" asp-for="@comment.Body"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@comment.ModeratedBody" class="control-label"></label>
+                                            <textarea asp-for="@comment.ModeratedBody" class="form-control"></textarea>
+                                            <span asp-validation-for="@comment.ModeratedBody" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="@comment.ModerationReason" class="control-label"></label>
+                                            <select asp-for="@comment.ModerationReason" class="form-control" asp-items="Html.GetEnumSelectList<ModerationReason>()"></select>
+                                            <span asp-validation-for="@comment.ModerationReason" class="text-danger"></span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <label asp-for="@comment.Body" class="control-label"></label>
+                                            <textarea asp-for="@comment.Body" class="form-control"></textarea>
+                                            <span asp-validation-for="@comment.Body" class="text-danger"></span>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        @* ToDo can I put this button in the modal footer?  Looks like I can't*@
+                                        <input type="submit" value="Save" class="btn btn-primary" />
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-        @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
-        {
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col">
-
-                        <p>Moderation Options:</p>
-                    </div>
-                    <div class="col">
-
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-danger">Delete Comment</button>
-                            <button type="button" class="btn btn-sm btn-warning">Moderate Comment</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        }
-    </div>
-}
+    }
 </div>
+<!-- Button trigger modal -->

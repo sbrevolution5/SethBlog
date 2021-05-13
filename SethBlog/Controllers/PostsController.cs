@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using SethBlog.Data;
+using SethBlog.Enums;
 using SethBlog.Models;
 using SethBlog.Services;
 using X.PagedList;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +12,7 @@ using SethBlog.Models;
 
 namespace SethBlog.Controllers
 {
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -95,8 +97,10 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,AuthorId,ModeratorId,Body,Created,Updated,Moderated,ModeratedBody,ModerationReason")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,AuthorId,ModeratorId,Body,Moderated,ModeratedBody,ModerationReason")] Comment comment)
         {
+            var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+            var slug = post.Slug;
             if (id != comment.Id)
             {
                 return NotFound();
@@ -106,6 +110,12 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    comment.Updated = DateTime.Now;
+                    if (comment.ModeratedBody is not null)
+                    {
+                        comment.Moderated = DateTime.Now;
+                        comment.IsReviewed = true;
+                    }
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
                 }
@@ -120,12 +130,14 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { Slug = slug });
             }
+            //TODO What are these for
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Post, "Id", "Abstract", comment.PostId);
-            return View(comment);
+            return RedirectToAction("Details", "Posts", new { Slug = slug });
+
         }
 
         // GET: Comments/Delete/5

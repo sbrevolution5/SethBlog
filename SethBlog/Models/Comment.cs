@@ -20,15 +20,15 @@ namespace SethBlog.Models
         public DateTime? Updated { get; set; }
         public DateTime? Moderated { get; set; }
         /// <summary>
-        /// What the moderater changed the body to
+        /// What the moderator changed the body to
         /// </summary>
         public string ModeratedBody { get; set; }
         public ModerationReason ModerationReason { get; set; }
         public virtual BlogUser Moderator { get; set; }
         public virtual Post Post { get; set; }
         public virtual BlogUser Author { get; set; }
-        //TODO add a "seen" property that handles whether a moderator has examined comment or not.  
         // Used for eventual moderator dashboard
+        public bool IsReviewed { get; set; }
 
     }
 }
