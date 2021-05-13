@@ -24,14 +24,16 @@ namespace SethBlog.Controllers
         private readonly IConfiguration _configuration;
         private readonly BasicSlugService _slugService;
         private readonly SearchService _searchService;
+        private readonly ReadTimeService _readTimeService;
 
-        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration, BasicSlugService slugService, SearchService searchService)
+        public PostsController(ApplicationDbContext context, IFileService fileService, IConfiguration configuration, BasicSlugService slugService, SearchService searchService, ReadTimeService readTimeService)
         {
             _context = context;
             _fileService = fileService;
             _configuration = configuration;
             _slugService = slugService;
             _searchService = searchService;
+            _readTimeService = readTimeService;
         }
         //GET:All Posts of one blog
         [AllowAnonymous]
@@ -112,10 +114,11 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,ReadTime,PostState")] Post post, IFormFile customFile)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PostState")] Post post, IFormFile customFile)
         {
             if (ModelState.IsValid)
             {
+                post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                 post.Created = DateTime.Now;
                 post.PostImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
                 post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
@@ -162,7 +165,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState,ReadTime")] Post post, IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState")] Post post, IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -173,6 +176,7 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                     post.Updated = DateTime.Now;
                     if (NewImage is not null)
                     {
