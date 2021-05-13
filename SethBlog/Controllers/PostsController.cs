@@ -37,17 +37,32 @@ namespace SethBlog.Controllers
         }
         //GET:All Posts of one blog
         [AllowAnonymous]
-        public async Task<ActionResult> BlogPostIndex(int? id)
+        public async Task<ActionResult> BlogPostIndex(int? id, int? page)
         {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
             if (id == null)
             {
                 return NotFound();
             }
             ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
-            var blogPosts = await _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToListAsync();
             ViewData["BlogId"] = id;
-            //TODO send comment counts for each post.
+            //TODO IS NOT WORK
+
+            if (!User.IsInRole("Administrator")||!User.IsInRole("Moderator"))
+            {
+                //If user is not in authorized roles, do include unpublished
+                var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
+                return View(blogPosts);
+
+            }
+            else
+            {
+                var blogPosts = _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
+
             return View(blogPosts);
+            }
+            //TODO send comment counts for each post.
         }
         // GET: All Posts
         public async Task<IActionResult> Index()

@@ -22,6 +22,8 @@ else
             @if (Model.BlogId > 0)
             {
                 <input type="hidden" asp-for="BlogId" />
+                <label>Blog Name</label>
+                <input readonly="readonly" class="form-control" value="@Model.Blog.Name" />
             }
             else
             {

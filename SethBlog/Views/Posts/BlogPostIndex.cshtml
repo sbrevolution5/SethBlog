@@ -1,4 +1,5 @@
 ﻿@using SethBlog.Services
+@using SethBlog.Enums
 @inject IFileService _fileService
 @model IEnumerable<Post>
 @{
@@ -10,7 +11,7 @@
         @if (Model.Count() == 0)
         {
             <h4>Looks like this blog has no posts yet</h4>
-            <a asp-action="Create" asp-route-blogId="@ViewData[" BlogId"]">Create New</a>
+            <a asp-action="Create" asp-route-blogId="@ViewData["BlogId"]">Create New</a>
         }
         else
         {
@@ -21,6 +22,12 @@
             <hr />
             @foreach (var post in Model)
             {
+                //if user isn't admin or mod and post is not published, show nothing for this loop, otherwise show card.  (danger text included in card footer)
+                @*@if (post.PostState == PostState.Published && (User.IsInRole("Administrator") || User.IsInRole("Moderator")))
+                {
+
+                    }*@
+                   
                 <div class="card shadow m-3 p-2">
                     <div class="row">
                         <div class="col-3">
@@ -29,7 +36,8 @@
                         </div>
                         <div class="col-9">
                             <div class="row">
-                                <h3 class="title mb-1"><a href="blog-post.html">@post.Title</a></h3>
+                                <h3 class="title mb-1"><a asp-controller="Posts" asp-action="Details"
+                                       asp-route-slug="@post.Slug">@post.Title</a></h3>
 
                             </div>
                             <div class="row">
@@ -57,6 +65,13 @@ null)
                             </div>
                         </div>
                     </div>
+                    @if (post.PostState != PostState.Published)
+                    {
+
+                    <div class="card-footer">
+                        <p class="text-danger">Post is not published, it is currently @post.PostState</p>
+                    </div>
+                    }
                 </div>
 
 
