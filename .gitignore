@@ -361,6 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-# appsettings.json
-# appsettings.development.json
+appsettings.json
+appsettings.development.json
 /SethBlog/wwwroot/DevBlog-v1.3
