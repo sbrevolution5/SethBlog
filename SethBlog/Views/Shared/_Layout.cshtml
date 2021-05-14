@@ -37,7 +37,7 @@
             <div id="navigation" class="collapse navbar-collapse flex-column">
                 <div class="profile-section pt-3 pt-lg-0">
                     <img class="profile-image mb-3 rounded-circle mx-auto" src="~/img/profile-img.jpg" alt="image">
-                   
+
                     <div class="bio mb-3">An arcane repository of coding tips, tutorials, and musings.  <br><a href="https://sethbcoding.com">Find out more about me</a></div><!--//bio-->
                     <ul class="social-list list-inline py-3 mx-auto">
                         <li class="list-inline-item"><a href="https://twitter.com/sbrevolution5"><i class="fab fa-twitter fa-fw"></i></a></li>
@@ -57,16 +57,16 @@
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
                     @*@if (User.IsInRole("Administrator"))
-                    {*@
+                        {*@
 
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
-                        </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
+                    </li>
                     @*}*@
-                <partial name="_LoginPartial" />
+                    <partial name="_LoginPartial" />
                 </ul>
                 <hr />
 
@@ -76,11 +76,11 @@
                 <hr />
                 <form asp-action="SearchIndex" asp-controller="Posts">
                     <div class="form-group input-group">
-                      <input type="text"
-                        class="form-control" name="SearchString" id="" aria-describedby="helpId" placeholder="Search...">
+                        <input type="text"
+                               class="form-control" name="SearchString" id="" aria-describedby="helpId" placeholder="Search...">
                         <div class="input-group-append">
 
-                        <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </div>
                 </form>
@@ -91,8 +91,8 @@
         <div class="container">
 
             <main role="main" class="pb-3">
-                
-                        @RenderBody()
+
+                @RenderBody()
             </main>
         </div>
 

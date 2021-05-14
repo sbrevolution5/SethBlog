@@ -20,14 +20,24 @@
                     </div>
                     <div class="col-9">
                         <div class="row">
-                            <h3 class="title mb-1"><a asp-controller="Posts" asp-action="BlogPostIndex"
-                                   asp-route-id="@blog.Id">@blog.Name</a></h3>
+                            <h3 class="title mb-1">
+                                <a asp-controller="Posts" asp-action="BlogPostIndex"
+                                   asp-route-id="@blog.Id">@blog.Name</a>
+                            </h3>
 
                         </div>
                         <div class="row">
                             <div class="meta">
+                                @*Need to set default for first or default*@
+                                @if (blog.Posts.Count > 0)
+                                {
 
-                                <span class="date">@blog.Created.ToString("MMM dd, yyyy")</span>
+                                    <span class="date">@blog.Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created.ToString("MMM dd, yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span class="date">@blog.Created.ToString("MMM dd, yyyy")</span>
+                                }
                                 <span class="comment"><a href="#">@blog.Posts.Count posts</a></span>
                             </div>
                         </div>
@@ -46,18 +56,6 @@
                     </div>
                 </div>
             </div>
-            @*<div class="item mb-5">
-                <div class="media">
-                    <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="@_fileService.DecodeFile(blog.BlogImage, blog.ContentType)" alt="image">
-
-                    <div class="media-body">
-                        <h3 class="title mb-1"><a href="blog-post.html">@blog.Name</a></h3>
-                        <div class="meta mb-1"><span class="date">@blog.Created.ToString("MMM dd, yyyy")</span><span class="comment"><a>@blog.Posts.Count Posts</a></span></div>
-                        <div class="intro">@blog.Description</div>
-                        <a name="" class="btn btn-primary btn-dark" asp-controller="Posts" asp-action="BlogPostIndex" asp-route-id="@blog.Id" role="button">See @blog.Posts.Count Posts</a>
-                    </div><!--//media-body-->
-                </div><!--//media-->
-            </div>*@<!--//item-->
         }
         <div class="row">
             <div class="col h3">
@@ -76,9 +74,9 @@
             </div>
         </div>
         @*<nav class="blog-nav nav nav-justified my-5">
-            <a class="nav-link-prev nav-item nav-link d-none rounded-left" href="#">Previous<i class="arrow-prev fas fa-long-arrow-alt-left"></i></a>
-            <a class="nav-link-next nav-item nav-link rounded" href="#">Next<i class="arrow-next fas fa-long-arrow-alt-right"></i></a>
-        </nav>*@
+                <a class="nav-link-prev nav-item nav-link d-none rounded-left" href="#">Previous<i class="arrow-prev fas fa-long-arrow-alt-left"></i></a>
+                <a class="nav-link-next nav-item nav-link rounded" href="#">Next<i class="arrow-next fas fa-long-arrow-alt-right"></i></a>
+            </nav>*@
 
     </div>
 </section>

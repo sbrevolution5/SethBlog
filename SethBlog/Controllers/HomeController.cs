@@ -28,8 +28,14 @@ namespace SethBlog.Controllers
             //handles case of no page given, in that case give it the first page.
             var pageNumber = page ?? 1;
             var pageSize = 5;
+            //How to update w
+            var allBlogs = await _context.Blog
+                .OrderByDescending(b=>b.Created)
+                .Include(b => b.Posts
+                .Where(p => p.PostState == Enums.PostState.Published))
+                .ToPagedListAsync(pageNumber,pageSize);
+            //need to get most recent post for each blog
 
-            var allBlogs = await _context.Blog.OrderByDescending(b=>b.Created).Include(b => b.Posts).ToPagedListAsync(pageNumber,pageSize);
             //load view with all blogs (removed when paging added)
             //var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Refactor count into service TODO
             return View(allBlogs);

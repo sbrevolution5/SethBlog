@@ -167,9 +167,12 @@ namespace SethBlog.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var comment = await _context.Comments.FindAsync(id);
+            var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+            var slug = post.Slug;
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Posts", new { Slug = slug });
+
         }
 
         private bool CommentExists(int id)

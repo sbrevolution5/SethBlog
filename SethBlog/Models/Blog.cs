@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,5 +33,21 @@ namespace SethBlog.Models
         //navigational properties
         //Virtual allows for lazy loading (instead of eager)
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
+        [NotMapped]
+        public DateTime LatestPostDate
+        {
+            get
+            {
+                if (Posts.Count > 0)
+                {
+
+                    return Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created;
+                }
+                else
+                {
+                    return Created;
+                }
+            }
+        }
     }
 }

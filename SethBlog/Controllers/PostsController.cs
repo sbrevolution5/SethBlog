@@ -47,7 +47,6 @@ namespace SethBlog.Controllers
             }
             ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
             ViewData["BlogId"] = id;
-            //TODO IS NOT WORK
 
             if (!User.IsInRole("Administrator") && !User.IsInRole("Moderator"))
             {

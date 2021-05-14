@@ -29,6 +29,7 @@ namespace SethBlog.Controllers
         }
 
         // GET: Blogs
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Blog.ToListAsync());
