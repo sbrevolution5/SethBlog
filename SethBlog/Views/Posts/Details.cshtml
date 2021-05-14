@@ -50,7 +50,7 @@ else
                 <input type="hidden" class="form-control" name="PostId" id="PostId" value="@Model.Id">
                 <textarea class="form-control" name="Body" id="" aria-describedby="helpId" rows="5" required></textarea>
                 <button type="submit" class="btn btn-primary btn-block btn-dark">Submit</button>
-                <span asp-validation-for="PostState" class="text-danger"></span>@*TODO change error message?*@
+                <span asp-validation-for="PostState" class="text-danger"></span>
             </div>
         </form>
     </div>
@@ -109,15 +109,15 @@ else
                     <div class="col">
 
                         <div class="btn-group">
+                            @if ((User.IsInRole("Moderator") || User.IsInRole("Administrator"))&& comment.IsReviewed == false)
+                            {
+
+                                <a type="button" class="btn btn-sm btn-success" asp-action="MarkAsReviewed" asp-controller="Comments" asp-route-id="@comment.Id"> Mark as Reviewed</a>
+                            }
                             <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
                                     data-target="#edit-@comment.Id">
                                 Edit Comment
                             </button>
-                            @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
-                            {
-
-                                <button type="button" class="btn btn-sm btn-success"> Mark as Reviewed</button>
-                            }
                             
                             @if (User.IsInRole("Administrator"))
                             {
@@ -220,4 +220,3 @@ else
     </div>
     }
 </div>
-<!-- Button trigger modal -->

@@ -30,7 +30,16 @@ namespace SethBlog.Controllers
             var applicationDbContext = _context.Comments.Include(c => c.Author).Include(c => c.Moderator).Include(c => c.Post);
             return View(await applicationDbContext.ToListAsync());
         }
-
+        // GET: Comments/Dashboard
+        [Authorize(Roles = "Administrator, Moderator")]
+        public async Task<IActionResult> Dashboard()
+        {
+            var applicationDbContext = _context.Comments.Where(c => c.IsReviewed == false)
+                .Include(c => c.Author)
+                .Include(c => c.Moderator)
+                .Include(c => c.Post);
+            return View(await applicationDbContext.ToListAsync());
+        }
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -115,6 +124,13 @@ namespace SethBlog.Controllers
                     {
                         comment.Moderated = DateTime.Now;
                         comment.IsReviewed = true;
+                        comment.ModeratorId = _userManager.GetUserId(User);
+
+                    }
+                    else
+                    {
+                        //in case user edits a previously reviewed comment. 
+                        comment.IsReviewed = false;
                     }
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
@@ -141,6 +157,8 @@ namespace SethBlog.Controllers
         }
 
         // GET: Comments/Delete/5
+        [Authorize(Roles = "Administrator")]
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -160,8 +178,27 @@ namespace SethBlog.Controllers
 
             return View(comment);
         }
+        // GET Comments/MarkAsReviewed/id
+        [Authorize(Roles = "Administrator, Moderator")]
+        public async Task<IActionResult> MarkAsReviewed(int id, bool dash = false)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            comment.IsReviewed = true;
+            comment.ModeratorId = _userManager.GetUserId(User);
+            var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
+            var slug = post.Slug;
+            _context.Update(comment);
+            await _context.SaveChangesAsync();
+            if (dash)
+            {
+                return RedirectToAction("Dashboard");
+            }
+            return RedirectToAction("Details", "Posts", new { Slug = slug });
 
+        }
         // POST: Comments/Delete/5
+        [Authorize(Roles = "Administrator")]
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

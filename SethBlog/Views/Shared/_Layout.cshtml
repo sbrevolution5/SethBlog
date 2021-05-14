@@ -56,8 +56,8 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-                    @*@if (User.IsInRole("Administrator"))
-                        {*@
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
+                        {
 
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs</a>
@@ -65,7 +65,11 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="Index">Posts</a>
                     </li>
-                    @*}*@
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Comments" asp-action="Dashboard">Moderator Dashboard</a>
+                    </li>
+
+                    }
                     <partial name="_LoginPartial" />
                 </ul>
                 <hr />
