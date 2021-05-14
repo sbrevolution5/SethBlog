@@ -49,7 +49,7 @@ namespace SethBlog.Controllers
             ViewData["BlogId"] = id;
             //TODO IS NOT WORK
 
-            if (!User.IsInRole("Administrator")||!User.IsInRole("Moderator"))
+            if (!User.IsInRole("Administrator") && !User.IsInRole("Moderator"))
             {
                 //If user is not in authorized roles, do include unpublished
                 var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
@@ -58,11 +58,11 @@ namespace SethBlog.Controllers
             }
             else
             {
-                var blogPosts = _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
+                var blogPosts = await _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
 
             return View(blogPosts);
             }
-            //TODO send comment counts for each post.
+            
         }
         // GET: All Posts
         public async Task<IActionResult> Index()
@@ -71,7 +71,7 @@ namespace SethBlog.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
         //Post: Search results
-        [HttpPost]
+        //[HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> SearchIndex(string searchString, int? page) 
         {

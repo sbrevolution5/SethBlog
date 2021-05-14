@@ -27,7 +27,7 @@
                 {
 
                     }*@
-                   
+
                 <div class="card shadow m-3 p-2">
                     <div class="row">
                         <div class="col-3">
@@ -36,8 +36,10 @@
                         </div>
                         <div class="col-9">
                             <div class="row">
-                                <h3 class="title mb-1"><a asp-controller="Posts" asp-action="Details"
-                                       asp-route-slug="@post.Slug">@post.Title</a></h3>
+                                <h3 class="title mb-1">
+                                    <a asp-controller="Posts" asp-action="Details"
+                                       asp-route-slug="@post.Slug">@post.Title</a>
+                                </h3>
 
                             </div>
                             <div class="row">
@@ -68,9 +70,9 @@ null)
                     @if (post.PostState != PostState.Published)
                     {
 
-                    <div class="card-footer">
-                        <p class="text-danger">Post is not published, it is currently @post.PostState</p>
-                    </div>
+                        <div class="card-footer">
+                            <p class="text-danger">Post is not published, it is currently @post.PostState</p>
+                        </div>
                     }
                 </div>
 
@@ -79,5 +81,21 @@ null)
 
 
         }
+        <div class="row">
+            <div class="col h3">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" }
+                    }
+               )
+            </div>
+        </div>
     </div>
 </section>
