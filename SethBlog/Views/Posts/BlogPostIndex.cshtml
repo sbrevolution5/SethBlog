@@ -1,7 +1,10 @@
 ﻿@using SethBlog.Services
 @using SethBlog.Enums
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
 @inject IFileService _fileService
-@model IEnumerable<Post>
+@model IPagedList<Post>
 @{
     ViewData["Title"] = "Blog posts";
 }
@@ -24,9 +27,9 @@
             {
                 //if user isn't admin or mod and post is not published, show nothing for this loop, otherwise show card.  (danger text included in card footer)
                 @*@if (post.PostState == PostState.Published && (User.IsInRole("Administrator") || User.IsInRole("Moderator")))
-                {
+                    {
 
-                    }*@
+                        }*@
 
                 <div class="card shadow m-3 p-2">
                     <div class="row">
@@ -88,7 +91,8 @@ null)
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { page = page,
+               id = @Model.FirstOrDefault()?.BlogId}),
                     new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },
