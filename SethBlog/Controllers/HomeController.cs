@@ -34,7 +34,7 @@ namespace SethBlog.Controllers
                 .Include(b => b.Posts
                 .Where(p => p.PostState == Enums.PostState.Published))
                 .ToPagedListAsync(pageNumber,pageSize);
-            //need to get most recent post for each blog
+                
 
             //load view with all blogs (removed when paging added)
             //var allBlogs = await _context.Blog.Include(b=>b.Posts).ToListAsync(); // Refactor count into service TODO

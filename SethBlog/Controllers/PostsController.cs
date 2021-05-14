@@ -51,13 +51,17 @@ namespace SethBlog.Controllers
             if (!User.IsInRole("Administrator") && !User.IsInRole("Moderator"))
             {
                 //If user is not in authorized roles, do include unpublished
-                var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
+                var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published)
+                    .Include(p => p.Comments)
+                    .ToPagedListAsync(pageNumber, pageSize);
                 return View(blogPosts);
 
             }
             else
             {
-                var blogPosts = await _context.Post.Where(p => p.BlogId == id).Include(p => p.Comments).ToPagedListAsync(pageNumber, pageSize);
+                var blogPosts = await _context.Post.Where(p => p.BlogId == id)
+                    .Include(p => p.Comments)
+                    .ToPagedListAsync(pageNumber, pageSize);
 
             return View(blogPosts);
             }
@@ -136,7 +140,12 @@ namespace SethBlog.Controllers
                 post.Created = DateTime.Now;
                 post.PostImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
                 post.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
-
+                if (post.PostState == PostState.Published)
+                {
+                    post.PublishedDate = DateTime.Now;
+                    var blog = _context.Blog.First(b => b.Id == post.BlogId);
+                    blog.LatestPostDate = post.PublishedDate;
+                }
                 //Slug stuff
                 var slug = _slugService.UrlFriendly(post.Title);
                 if (_slugService.IsUnique(slug))
@@ -179,7 +188,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,Content,PostState")] Post post, IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,PublishedDate,Content,PostState")] Post post, IFormFile NewImage)
         {
             if (id != post.Id)
             {
@@ -192,6 +201,12 @@ namespace SethBlog.Controllers
                 {
                     post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                     post.Updated = DateTime.Now;
+                    if (post.PostState == PostState.Published && post.PublishedDate == null)
+                    {
+                        post.PublishedDate = DateTime.Now;
+                        var blog = _context.Blog.First(b => b.Id == post.BlogId);
+                        blog.LatestPostDate = post.PublishedDate;
+                    }
                     if (NewImage is not null)
                     {
                         post.PostImage = await _fileService.EncodeFileAsync(NewImage);

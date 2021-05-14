@@ -33,21 +33,24 @@ namespace SethBlog.Models
         //navigational properties
         //Virtual allows for lazy loading (instead of eager)
         public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
-        [NotMapped]
-        public DateTime LatestPostDate
-        {
-            get
-            {
-                if (Posts.Count > 0)
-                {
+        [DataType(DataType.Date)]
+        [Display(Name = "Most Recent Article Date")]
+        public DateTime? LatestPostDate { get; set; }
+        //[NotMapped]
+        //public DateTime LatestPostDate
+        //{
+        //    get
+        //    {
+        //        if (Posts.Count > 0)
+        //        {
 
-                    return Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created;
-                }
-                else
-                {
-                    return Created;
-                }
-            }
-        }
+        //            return Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created;
+        //        }
+        //        else
+        //        {
+        //            return Created;
+        //        }
+        //    }
+        //}
     }
 }

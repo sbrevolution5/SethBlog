@@ -29,15 +29,9 @@
                         <div class="row">
                             <div class="meta">
                                 @*Need to set default for first or default*@
-                                @if (blog.Posts.Count > 0)
-                                {
-
-                                    <span class="date">@blog.Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created.ToString("MMM dd, yyyy")</span>
-                                }
-                                else
-                                {
-                                    <span class="date">@blog.Created.ToString("MMM dd, yyyy")</span>
-                                }
+                                <span class="date">
+                                    updated: @string.Format("{0:MMM dd yyyy}", blog.LatestPostDate)
+                                </span>
                                 <span class="comment"><a href="#">@blog.Posts.Count posts</a></span>
                             </div>
                         </div>
