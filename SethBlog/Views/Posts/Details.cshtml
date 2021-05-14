@@ -112,17 +112,17 @@ else
                             @if ((User.IsInRole("Moderator") || User.IsInRole("Administrator"))&& comment.IsReviewed == false)
                             {
 
-                                <a type="button" class="btn btn-sm btn-success" asp-action="MarkAsReviewed" asp-controller="Comments" asp-route-id="@comment.Id"> Mark as Reviewed</a>
+                                <a type="button" class="btn btn-sm btn-success" asp-action="MarkAsReviewed" asp-controller="Comments" asp-route-id="@comment.Id"> Reviewed</a>
                             }
                             <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
                                     data-target="#edit-@comment.Id">
-                                Edit Comment
+                                Edit
                             </button>
                             
                             @if (User.IsInRole("Administrator"))
                             {
 
-                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-@comment.Id"> Delete Comment</button>
+                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-@comment.Id"> Delete</button>
                             }
                     
                         </div>
