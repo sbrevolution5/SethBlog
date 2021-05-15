@@ -36,21 +36,5 @@ namespace SethBlog.Models
         [DataType(DataType.Date)]
         [Display(Name = "Most Recent Article Date")]
         public DateTime? LatestPostDate { get; set; }
-        //[NotMapped]
-        //public DateTime LatestPostDate
-        //{
-        //    get
-        //    {
-        //        if (Posts.Count > 0)
-        //        {
-
-        //            return Posts.OrderByDescending(p => p.Created).FirstOrDefault().Created;
-        //        }
-        //        else
-        //        {
-        //            return Created;
-        //        }
-        //    }
-        //}
     }
 }
