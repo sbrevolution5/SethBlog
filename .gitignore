@@ -364,5 +364,6 @@ FodyWeavers.xsd
 appsettings.json
 appsettings.development.json
 /SethBlog/wwwroot/DevBlog-v1.3
-/blogtests
 /SethBlogTests1
+/SethBlogTests2
+/blogtests
