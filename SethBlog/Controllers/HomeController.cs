@@ -29,6 +29,8 @@ namespace SethBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 5;
             // Get latest post? maybe use viewdata?
+            var latestPost = await _context.Post.OrderByDescending(p => p.PublishedDate).FirstAsync();
+            ViewData["latestPost"] = latestPost; //TODO This isn't quite right
             var allBlogs = await _context.Blog
                 .OrderByDescending(b=>b.Created)
                 .Include(b => b.Posts

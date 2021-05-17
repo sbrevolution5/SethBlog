@@ -62,6 +62,7 @@ namespace SethBlog.Controllers
             {
                 var blogPosts = await _context.Post.Where(p => p.BlogId == id)
                     .Include(p => p.Comments)
+                    .OrderByDescending(p=> p.PublishedDate ?? p.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
 
             return View(blogPosts);
