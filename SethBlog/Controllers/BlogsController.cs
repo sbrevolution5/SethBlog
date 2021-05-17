@@ -55,11 +55,10 @@ namespace SethBlog.Controllers
 
         // GET: Blogs/Create
         [Authorize(Roles = "Administrator")]
-
         public IActionResult Create()
         {
             return View();
-        } 
+        }
 
         // POST: Blogs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -70,7 +69,8 @@ namespace SethBlog.Controllers
         {
             if (ModelState.IsValid)
             {
-            blog.Created = DateTime.Now;
+                blog.Created = DateTime.Now;
+                blog.LatestPostDate = blog.Created; //A default of blog.Created will prevent it having to be null.
                 blog.BlogImage = (await _fileService.EncodeFileAsync(customFile)) ?? await _fileService.EncodeFileAsync(_configuration["DefaultBlogImage"]);
                 blog.ContentType = customFile is null ? _configuration["DefaultUserImage"].Split('.')[1] : _fileService.RecordContentType(customFile);
                 _context.Add(blog);
@@ -134,7 +134,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index),"Home");
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(blog);
         }
