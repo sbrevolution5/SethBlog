@@ -53,7 +53,7 @@ namespace SethBlog.Controllers
                 //If user is not in authorized roles, do include unpublished
                 var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published)
                     .Include(p => p.Comments)
-                    .OrderByDescending(p => p.PublishedDate)
+                    .OrderByDescending(p => p.PublishedDate ?? p.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
                 return View(blogPosts);
 
@@ -66,6 +66,41 @@ namespace SethBlog.Controllers
                     .ToPagedListAsync(pageNumber, pageSize);
 
             return View(blogPosts);
+            }
+            
+        }//GET:All Posts 
+        [AllowAnonymous]
+        public async Task<ActionResult> PostIndex(int? page)
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            //ViewData["BlogName"] = _context.Blog.First(b => b.Id == id).Name;
+            //ViewData["BlogId"] = id;
+
+            if (!User.IsInRole("Administrator") && !User.IsInRole("Moderator"))
+            {
+                //If user is not in authorized roles, do include unpublished
+                var allPosts = await _context.Post.Where(p => p.PostState == PostState.Published)
+                    .Include(p => p.Comments)
+                    .Include(p => p.Blog) // needed to display blog title
+                    .OrderByDescending(p => p.PublishedDate ?? p.Created)
+                    .ToPagedListAsync(pageNumber, pageSize);
+                return View(allPosts);
+
+            }
+            else
+            {
+                var allPosts = await _context.Post.Where(p => p.Id == p.Id) //gets ALL elements
+                    .Include(p => p.Comments)
+                    .Include(p => p.Blog)
+                    .OrderByDescending(p => p.PublishedDate ?? p.Created)
+                    .ToPagedListAsync(pageNumber, pageSize);
+
+                return View(allPosts);
             }
             
         }

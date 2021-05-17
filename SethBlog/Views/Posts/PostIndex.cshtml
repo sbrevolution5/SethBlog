@@ -1,0 +1,93 @@
+﻿@using SethBlog.Services
+@using SethBlog.Enums
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@inject IFileService _fileService
+@model IPagedList<Post>
+@{
+    ViewData["Title"] = "All posts";
+}
+<section class="blog-list px-3 py-5 p-md-5">
+    <div class="container">
+        <h1>All Posts</h1>
+            @if (User.IsInRole("Administrator"))
+            {
+                <a asp-action="Create">Create New</a> 
+            }
+            <hr />
+            @foreach (var post in Model)
+            {
+                
+
+                <div class="card shadow m-3 p-2">
+                    <div class="row">
+                        <div class="col-3">
+                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
+                                 src="@_fileService.DecodeFile(post.PostImage,post.ContentType)" alt="image">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                <h3 class="title mb-1">
+                                    <a asp-controller="Posts" asp-action="Details"
+                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">@post.Title</a>
+                                </h3>
+
+                            </div>
+                            <div class="row">
+                                <div class="meta">
+
+                                    <span class="date"> @string.Format("{0:MMM dd yyyy}", post.PublishedDate)</span>@if (post.ReadTime is not null)
+                                    {
+                                        <span class="time">@post.ReadTime min to read</span>
+                                    }
+                                    <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-7 p-0">
+                                    <div class="intro">
+                                        @post.Abstract
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
+                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">Read more &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="card-footer">
+                            <p class="text-muted">From Blog: @post.Blog.Name</p>
+                    @if (post.PostState != PostState.Published)
+                    {
+
+                            <p class="text-danger">Post is not published, it is currently @post.PostState</p>
+                    }
+                        </div>
+                </div>
+
+
+            }
+
+
+        <div class="row">
+            <div class="col h3">
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { page = page,
+               id = @Model.FirstOrDefault()?.BlogId}),
+                    new PagedListRenderOptions
+                    {
+                        LiElementClasses = new string[] { "page-item" },
+                        PageClasses = new string[] { "page-link" }
+                    }
+               )
+            </div>
+        </div>
+    </div>
+</section>
