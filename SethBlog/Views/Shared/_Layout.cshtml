@@ -16,6 +16,10 @@
     <script defer src="~/fontawesome/js/all.min.js"></script>
 
     <!-- Theme CSS -->
+    @* animate.style sheet *@
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    
     @*<link href="~/scss/theme-7.css" rel="stylesheet" />*@
     <link href="~/css/theme-7.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
@@ -68,13 +72,13 @@
                         <a class="nav-link" asp-area="" asp-controller="Comments" asp-action="Dashboard">Moderator Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
                         <hr />
                     </li>
                     }
                     <partial name="_LoginPartial" />
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
                 </ul>
                 <hr />
 
