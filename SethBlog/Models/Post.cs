@@ -34,6 +34,7 @@ namespace SethBlog.Models
         //i.e. ready, published, draft
         [Display(Name ="Post State")]
         public PostState PostState { get; set; }
+        [DataType(DataType.Date)]
         [Display(Name ="Published Date")]
         public DateTime? PublishedDate { get; set; } 
         [Display(Name ="Estimated Minutes To Read")]
