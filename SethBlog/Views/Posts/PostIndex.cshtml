@@ -79,8 +79,7 @@
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { page = page,
-               id = @Model.FirstOrDefault()?.BlogId}),
+                @Html.PagedListPager(Model, page => Url.Action("PostIndex", new { page = page}),
                     new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },

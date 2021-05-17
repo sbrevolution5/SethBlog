@@ -49,10 +49,14 @@
 
                 <ul class="navbar-nav flex-column text-center">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">All Blogs</a>
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Browse Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="PostIndex">All Posts</a>
+                    </li>
+                    <li class="nav-item">
+
+                        <hr />
                     </li>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                         {
@@ -66,7 +70,9 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
-
+                    <li class="nav-item">
+                        <hr />
+                    </li>
                     }
                     <partial name="_LoginPartial" />
                 </ul>
