@@ -203,7 +203,7 @@ namespace SethBlog.Controllers
                 {
                     post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                     post.Updated = DateTime.Now;
-                    // Handles published date and updates parent blog
+                    // Handles published date and updates parent blog's LatestPostDate
                     if (post.PostState == PostState.Published && post.PublishedDate == null)
                     {
                         post.PublishedDate = DateTime.Now;

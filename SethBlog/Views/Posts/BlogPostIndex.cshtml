@@ -25,11 +25,7 @@
             <hr />
             @foreach (var post in Model)
             {
-                //if user isn't admin or mod and post is not published, show nothing for this loop, otherwise show card.  (danger text included in card footer)
-                @*@if (post.PostState == PostState.Published && (User.IsInRole("Administrator") || User.IsInRole("Moderator")))
-                    {
-
-                        }*@
+                
 
                 <div class="card shadow m-3 p-2">
                     <div class="row">
