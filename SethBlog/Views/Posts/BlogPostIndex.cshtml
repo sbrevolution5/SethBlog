@@ -41,15 +41,14 @@
                             <div class="row">
                                 <h3 class="title mb-1">
                                     <a asp-controller="Posts" asp-action="Details"
-                                       asp-route-slug="@post.Slug">@post.Title</a>
+                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">@post.Title</a>
                                 </h3>
 
                             </div>
                             <div class="row">
                                 <div class="meta">
 
-                                    <span class="date">@post.Created.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not
-null)
+                                    <span class="date">@post.Created.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not null)
                                     {
                                         <span class="time">@post.ReadTime min to read</span>
                                     }
@@ -65,7 +64,7 @@ null)
                                 </div>
                                 <div class="col-5">
                                     <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
-                                       asp-route-slug="@post.Slug">Read more &rarr;</a>
+                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">Read more &rarr;</a>
                                 </div>
                             </div>
                         </div>

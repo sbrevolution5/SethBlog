@@ -12,7 +12,7 @@
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span>|</span>
     }
-    <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">Back to List</a>
+    <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId" asp-route-page="@ViewData["FromPage"]">Back to List</a>@*Page number we came from?*@
     <div class="container">
         <header class="blog-post-header">
             <h2 class="title mb-2">@Model.Title</h2>
