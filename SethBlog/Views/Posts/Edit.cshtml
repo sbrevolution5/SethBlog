@@ -58,8 +58,8 @@
             <div class="form-group">
                 <label asp-for="PostImage"></label>
                 <div class="custom-file">
-                    <input name="NewImage" type="file" class="form-control-file custom-file-input" id="customFile" />
-                    <label class="control-label custom-file-label" for="customFile">Choose</label>
+                    <input name="NewImage" type="file" class="form-control-file custom-file-input" id="customFile" accept="image/*"/>
+                    <label class="control-label custom-file-label" for="customFile" >Choose</label>
                 </div>
             </div>
             <div class="form-group">
@@ -75,4 +75,10 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
 }
