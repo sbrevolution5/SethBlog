@@ -20,7 +20,7 @@
             {
                 <span class="time">@Model.ReadTime min to read</span>
             }
-            | <span class="comment"><a href="#">@Model.Comments.Count comments</a></span>
+            | <span class="comment">@Model.Comments.Count comments</span>
             <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" />
         </header>
 
@@ -54,7 +54,7 @@
         </div>
     }
     @* List Current comments *@
-    <div class="comment-container">
+    <div class="comment-container" id="#comments">
         <p class=" m-4 text-muted">@Model.Comments.Count Comments </p>
 
         @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
