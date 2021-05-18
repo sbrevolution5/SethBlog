@@ -217,7 +217,7 @@ namespace SethBlog.Controllers
             {
                 return NotFound();
             }
-            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
 
@@ -278,7 +278,7 @@ namespace SethBlog.Controllers
                 }
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
             }
-            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Description", post.BlogId);
+            ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
 
