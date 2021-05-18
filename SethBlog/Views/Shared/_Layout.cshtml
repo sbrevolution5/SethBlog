@@ -60,21 +60,21 @@
                     </li>
                     @*<li class="nav-item">
 
-                    </li>*@
-                        @*<div class="dropdown-divider border-dark w-100"></div>*@
-                <li><hr /></li>
+                        </li>*@
+                    @*<div class="dropdown-divider border-dark w-100"></div>*@
+                    <li><hr /></li>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
-                        {
+                    {
 
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs Index</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Comments" asp-action="Dashboard">Moderator Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <hr />
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Blogs" asp-action="Index">Blogs Index</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Comments" asp-action="Dashboard">Moderator Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <hr />
+                        </li>
                     }
                     <partial name="_LoginPartial" />
                     <li class="nav-item">
@@ -93,7 +93,7 @@
                                class="form-control" name="SearchString" id="" aria-describedby="helpId" placeholder="Search...">
                         <div class="input-group-append">
 
-                            <button type="submit" class="btn btn-primary">Search</button>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
                 </form>
@@ -124,6 +124,19 @@
     <script>
         $(document).ready(function () {
             $('#summernote').summernote()
+        });
+
+    </script>
+    <!-- Summer Note - Responsive image fix -->
+    <script>
+        $(document).ready(function () {
+            $("img").addClass("img-fluid");
+            $("img").css("max-width", "100%");
+            $("img").css("height", "auto");
+            $("img").css("width", "auto");
+            $("img").css("aspect-ratio", "auto");
+            $("img").parent("span").css("width", "auto");
+            $("img").parent("span").css("height", "auto");
         });
     </script>
 
