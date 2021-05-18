@@ -53,7 +53,7 @@ namespace SethBlog.Services
         }
         private async Task SeedUsersAsync()
         {
-            if (_context.Users.Any())
+            if (_context.Users.Count() < 2)
             {
                 return;
             }
@@ -70,6 +70,19 @@ namespace SethBlog.Services
             };
             await _userManager.CreateAsync(adminUser, _configuration["AdminPassword"]);
             await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
+            var modUser = new BlogUser()
+            {
+                Email = "sbrevolution5.sb@gmail.com",
+                UserName = "sbrevolution5.sb@gmail.com",
+                FirstName = "Seth",
+                LastName = "Burleson",
+                PhoneNumber = "919-7634059",
+                EmailConfirmed = true,
+                ImageData = await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
+                ContentType = "png",
+            };
+            await _userManager.CreateAsync(adminUser, _configuration["ModPassword"]);
+            await _userManager.AddToRoleAsync(adminUser, BlogRole.Moderator.ToString());
         }
     }
 }
