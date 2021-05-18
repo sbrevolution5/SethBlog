@@ -1,9 +1,10 @@
 ﻿@using SethBlog.Services
+@using SethBlog.ViewModels
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 @inject IFileService _fileService
-@model IPagedList<Blog>
+@model HomepageViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -13,17 +14,20 @@
             Latest Article
         </div>
         <div class="card-body">
-            <h5 class="card-title">Title of latest article</h5>
-            <p class="card-text">Abstract of latest article</p>
-            <a href="#" class="btn btn-primary">Read now</a>
+            <h5 class="card-title">@Model.LatestPost.Title</h5>
+            <p class="card-text">@Model.LatestPost.Abstract</p>
+            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@Model.LatestPost.Slug" class="btn btn-primary">Read now</a>
         </div>
         <div class="card-footer text-muted">
-            2 days ago
+            @{ 
+                var days = (DateTime.Now.Date - Model.LatestPost.PublishedDate.Value.Date).TotalDays;
+             }
+            @days days ago
         </div>
     </div>
     <div class="container">
         <h1 class="text-center p-2">Blog Directory</h1>
-        @foreach (var blog in Model)
+        @foreach (var blog in Model.Blogs)
         {
             <div class="card shadow m-3 p-2 animate__animated animate__fadeInUp">
                 <div class="row">
@@ -66,12 +70,12 @@
         }
         <div class="row">
             <div class="col h3">
-                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+                Page @(Model.Blogs.PageCount < Model.Blogs.PageNumber ? 0 : Model.Blogs.PageNumber) of @Model.Blogs.PageCount
             </div>
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                @Html.PagedListPager(Model.Blogs, page => Url.Action("Index", new { page = page }),
                     new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },

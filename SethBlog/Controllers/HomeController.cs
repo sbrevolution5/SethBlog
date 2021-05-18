@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SethBlog.Data;
 using SethBlog.Models;
+using SethBlog.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,15 +30,18 @@ namespace SethBlog.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 5;
             // Get latest post? maybe use viewdata?
-            var latestPost = await _context.Post.OrderByDescending(p => p.PublishedDate).FirstAsync();
-            ViewData["latestPost"] = latestPost; //TODO This isn't quite right
             var allBlogs = await _context.Blog
                 .OrderByDescending(b=>b.Created)
                 .Include(b => b.Posts
                     .Where(p => p.PostState == Enums.PostState.Published)
                     .OrderByDescending(p => p.PublishedDate))
                 .ToPagedListAsync(pageNumber,pageSize);
-            return View(allBlogs);
+            var viewModel = new HomepageViewModel()
+            {
+                LatestPost = await _context.Post.OrderByDescending(p => p.PublishedDate).FirstOrDefaultAsync(p=> p.PublishedDate != null),
+                Blogs = allBlogs
+            };
+            return View(viewModel);
         }
 
         public IActionResult Privacy()
