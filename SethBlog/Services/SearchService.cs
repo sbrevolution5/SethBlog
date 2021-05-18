@@ -27,17 +27,17 @@ namespace SethBlog.Services
             //if no user input, return ALL posts
             if (!string.IsNullOrEmpty(searchString))
             {
-            
+                searchString = searchString.ToLower();
             //narrow down results
-            result = result.Where(p => p.Title.Contains(searchString) ||
-                                      p.Abstract.Contains(searchString) ||
-                                      p.Content.Contains(searchString) ||
+            result = result.Where(p => p.Title.ToLower().Contains(searchString) ||
+                                      p.Abstract.ToLower().Contains(searchString) ||
+                                      p.Content.ToLower().Contains(searchString) ||
                                       //If comment has been moderated, don't search regular body.
-                                      p.Comments.Any(c => c.Moderated == null && c.Body.Contains(searchString) ||
-                                                         c.ModeratedBody.Contains(searchString) ||
-                                                         c.Author.FirstName.Contains(searchString) ||
-                                                         c.Author.LastName.Contains(searchString) ||
-                                                         c.Author.Email.Contains(searchString)));
+                                      p.Comments.Any(c => c.Moderated == null && c.Body.ToLower().Contains(searchString) ||
+                                                         c.ModeratedBody.ToLower().Contains(searchString) ||
+                                                         c.Author.FirstName.ToLower().Contains(searchString) ||
+                                                         c.Author.LastName.ToLower().Contains(searchString) ||
+                                                         c.Author.Email.ToLower().Contains(searchString)));
             }
             //possible email removal due to privacy in an extreme edge case. 
             return result.OrderByDescending(p => p.Created);

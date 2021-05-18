@@ -20,48 +20,51 @@
         {
             @if (User.IsInRole("Administrator"))
             {
-                <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a> <span> | </span> 
+                <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a> <span> | </span>
                 <a asp-controller="Blogs" asp-action="Edit">Edit Blog</a>
             }
             <hr />
             @foreach (var post in Model)
             {
-                
+
 
                 <div class="card shadow m-3 p-2 animate__animated animate__fadeInUp">
-                    <div class="row">
-                        <div class="col-3">
-                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
-                                 src="@_fileService.DecodeFile(post.PostImage,post.ContentType)" alt="image">
-                        </div>
-                        <div class="col-9">
-                            <div class="row">
-                                <h3 class="title mb-1">
-                                    <a asp-controller="Posts" asp-action="Details"
-                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">@post.Title</a>
-                                </h3>
+                    <div class="card-body">
 
+                        <div class="row">
+                            <div class="col-md-3 d-sm-none">
+                                <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
+                                     src="@_fileService.DecodeFile(post.PostImage,post.ContentType)" alt="image">
                             </div>
-                            <div class="row">
-                                <div class="meta">
+                            <div class="col-md-9 col-sm">
+                                <div class="row">
+                                    <h3 class="title mb-1">
+                                        <a asp-controller="Posts" asp-action="Details"
+                                           asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">@post.Title</a>
+                                    </h3>
 
-                                    <span class="date"> @string.Format("{0:MMM dd yyyy}", post.PublishedDate)</span>@if (post.ReadTime is not null)
-                                    {
-                                        <span class="time">@post.ReadTime min to read</span>
-                                    }
-                                    <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
                                 </div>
-                            </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-7 p-0">
-                                    <div class="intro">
-                                        @post.Abstract
+                                <div class="row">
+                                    <div class="meta">
+
+                                        <span class="date"> @string.Format("{0:MMM dd yyyy}", post.PublishedDate)</span>@if (post.ReadTime is not null)
+                                        {
+                                            <span class="time">@post.ReadTime min to read</span>
+                                        }
+                                        <span class="comment"><a href="#">@post.Comments.Count comments</a></span>
                                     </div>
                                 </div>
-                                <div class="col-5">
-                                    <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
-                                       asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">Read more &rarr;</a>
+                                <br />
+                                <div class="row">
+                                    <div class="col-7 p-0">
+                                        <div class="intro">
+                                            @post.Abstract
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="Details"
+                                           asp-route-slug="@post.Slug" asp-route-page="@Model.PageNumber">Read more &rarr;</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -87,8 +90,11 @@
         </div>
         <div class="row">
             <div class="col">
-                @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new { page = page,
-               id = @Model.FirstOrDefault()?.BlogId}),
+                @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new
+                {
+                    page = page,
+               id = @Model.FirstOrDefault()?.BlogId
+                }),
                     new PagedListRenderOptions
                     {
                         LiElementClasses = new string[] { "page-item" },

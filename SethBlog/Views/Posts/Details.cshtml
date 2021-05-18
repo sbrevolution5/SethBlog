@@ -63,19 +63,19 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-2">
-                            <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
+                        <div class="col-md-3 d-sm-none">
+                            <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1 d-none d-md-flex" alt="{comment.Author.FullName} Image">
                         </div>
-                        <div class="col-10">
+                        <div class="col-md-9 col-sm">
                             <div class="row">
 
-                                <div class="col-7">
+                                <div class="col-9">
 
                                     <h4 class="card-title">
                                         @comment.Author.FullName
                                     </h4>
                                 </div>
-                                <div class="col-5 text-right">
+                                <div class="col-3 text-right">
                                     <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
                                 </div>
                             </div>

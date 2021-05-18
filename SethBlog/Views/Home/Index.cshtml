@@ -13,62 +13,64 @@
         <div class="card-header">
             Latest Article
         </div>
-        <img class="card-img-top justify-content-center card-img-custom" src="@_fileService.DecodeFile(Model.LatestPost.PostImage,Model.LatestPost.ContentType)"/>
+        <img class="card-img-top justify-content-center card-img-custom" src="@_fileService.DecodeFile(Model.LatestPost.PostImage,Model.LatestPost.ContentType)" />
         <div class="card-body">
             <h5 class="card-title">@Model.LatestPost.Title</h5>
             <p class="card-text">@Model.LatestPost.Abstract</p>
             <a asp-controller="Posts" asp-action="Details" asp-route-slug="@Model.LatestPost.Slug" class="btn btn-primary animate__animated animate__jello animate__delay-2s">Read now</a>
         </div>
-            @{
-                var days = (DateTime.Now.Date - Model.LatestPost.PublishedDate.Value.Date).TotalDays;
-            }
-            @if (days < 1)
-            {
-                <div class="card-footer text-muted">Posted Today</div>
-            }
-            else
-            {
-        <div class="card-footer text-muted">@days days ago</div>
+        @{
+            var days = (DateTime.Now.Date - Model.LatestPost.PublishedDate.Value.Date).TotalDays;
+        }
+        @if (days < 1)
+        {
+            <div class="card-footer text-muted">Posted Today</div>
+        }
+        else
+        {
+            <div class="card-footer text-muted">@days days ago</div>
 
-            }
-            </div>
+        }
+    </div>
     <div class="container">
         <h1 class="text-center p-2">Blog Directory</h1>
         @foreach (var blog in Model.Blogs)
         {
             <div class="card shadow m-3 p-2 animate__animated animate__fadeInUp">
-                <div class="row">
-                    <div class="col-3">
-                        <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
-                             src="@_fileService.DecodeFile(blog.BlogImage,blog.ContentType)" alt="image">
-                    </div>
-                    <div class="col-9">
-                        <div class="row">
-                            <h3 class="title mb-1">
-                                <a asp-controller="Posts" asp-action="BlogPostIndex"
-                                   asp-route-id="@blog.Id">@blog.Name</a>
-                            </h3>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-1">
+                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex"
+                                 src="@_fileService.DecodeFile(blog.BlogImage,blog.ContentType)" alt="image">
+                        </div>
+                        <div class="col-9">
+                            <div class="row">
+                                <h3 class="card-title mb-1">
+                                    <a asp-controller="Posts" asp-action="BlogPostIndex"
+                                       asp-route-id="@blog.Id">@blog.Name</a>
+                                </h3>
 
-                        </div>
-                        <div class="row">
-                            <div class="meta">
-                                @*Need to set default for first or default*@
-                                <span class="date">
-                                    updated: @string.Format("{0:MMM dd yyyy}", blog.LatestPostDate)
-                                </span>
-                                <span class="comment"><a href="#">@blog.Posts.Count posts</a></span>
                             </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-7 p-0">
-                                <div class="intro">
-                                    @blog.Description
+                            <div class="row">
+                                <div class="meta">
+                                    @*Need to set default for first or default*@
+                                    <span class="date">
+                                        updated: @string.Format("{0:MMM dd yyyy}", blog.LatestPostDate)
+                                    </span>
+                                    <span class="comment"><a href="#">@blog.Posts.Count posts</a></span>
                                 </div>
                             </div>
-                            <div class="col-5">
-                                <a class="btn btn-outline-primary" asp-controller="Posts" asp-action="BlogPostIndex"
-                                   asp-route-id="@blog.Id">See @blog.Posts.Count Posts</a>
+                            <br />
+                            <div class="row">
+                                <div class="col-7 p-0">
+                                    <div class="intro">
+                                        @blog.Description
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <a class="btn btn-outline-primary btn-sm" asp-controller="Posts" asp-action="BlogPostIndex"
+                                       asp-route-id="@blog.Id">See @blog.Posts.Count Posts</a>
+                                </div>
                             </div>
                         </div>
                     </div>

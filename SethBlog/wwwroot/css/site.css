@@ -4,7 +4,11 @@
     bottom: 0;
     width: 100%;
 }
-
+@media (max-width: 768px) {
+    .footer{
+        position: unset;
+    }
+}
 /*restricts images to a max height*/
 .post-thumb {
    max-height: 125px;
@@ -37,4 +41,7 @@ body{
     height: 30vh;
     width:100%;
     object-fit: contain;
+}
+.btn{
+    height:auto;
 }
