@@ -13,18 +13,25 @@
         <div class="card-header">
             Latest Article
         </div>
+        <img class="card-img-top justify-content-center card-img-custom" src="@_fileService.DecodeFile(Model.LatestPost.PostImage,Model.LatestPost.ContentType)"/>
         <div class="card-body">
             <h5 class="card-title">@Model.LatestPost.Title</h5>
             <p class="card-text">@Model.LatestPost.Abstract</p>
             <a asp-controller="Posts" asp-action="Details" asp-route-slug="@Model.LatestPost.Slug" class="btn btn-primary">Read now</a>
         </div>
-        <div class="card-footer text-muted">
-            @{ 
+            @{
                 var days = (DateTime.Now.Date - Model.LatestPost.PublishedDate.Value.Date).TotalDays;
-             }
-            @days days ago
-        </div>
-    </div>
+            }
+            @if (days < 1)
+            {
+                <div class="card-footer text-muted">Posted Today</div>
+            }
+            else
+            {
+        <div class="card-footer text-muted">@days days ago</div>
+
+            }
+            </div>
     <div class="container">
         <h1 class="text-center p-2">Blog Directory</h1>
         @foreach (var blog in Model.Blogs)

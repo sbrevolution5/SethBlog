@@ -33,3 +33,8 @@ body{
 .comment-container{
     padding-bottom: 20px;
 }
+.card-img-custom{
+    height: 30vh;
+    width:100%;
+    object-fit: contain;
+}
