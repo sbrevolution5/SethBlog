@@ -51,17 +51,18 @@
                     <hr>
                 </div><!--//profile-section-->
 
-                <ul class="navbar-nav flex-column text-center">
+                <ul class="navbar-nav flex-column text-center w-100">
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Browse Blogs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="Posts" asp-action="PostIndex">All Posts</a>
                     </li>
-                    <li class="nav-item">
+                    @*<li class="nav-item">
 
-                        <hr />
-                    </li>
+                    </li>*@
+                        @*<div class="dropdown-divider border-dark w-100"></div>*@
+                    <div><hr /></div>
                     @if (User.IsInRole("Administrator") || User.IsInRole("Moderator"))
                         {
 
