@@ -17,7 +17,7 @@
         <div class="card-body">
             <h5 class="card-title">@Model.LatestPost.Title</h5>
             <p class="card-text">@Model.LatestPost.Abstract</p>
-            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@Model.LatestPost.Slug" class="btn btn-primary">Read now</a>
+            <a asp-controller="Posts" asp-action="Details" asp-route-slug="@Model.LatestPost.Slug" class="btn btn-primary animate__animated animate__jello animate__delay-2s">Read now</a>
         </div>
             @{
                 var days = (DateTime.Now.Date - Model.LatestPost.PublishedDate.Value.Date).TotalDays;
