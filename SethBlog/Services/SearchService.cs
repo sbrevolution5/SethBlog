@@ -17,11 +17,6 @@ namespace SethBlog.Services
         }
         public IOrderedQueryable<Post> SearchContent(string searchString)
         {
-            //TODO Potential Improvements
-            // Non-case sensitive search
-            // ignoring formatting (HTML) when searching.
-            // splitting words, adding to the end of our search, I.E. showing a later result for How to use divs in HTML, if the user searches for How to format divs in CSS.  The wording is slightly different, but there is still some relevance as it does include divs.  
-                //If we include the above feature, Maybe ignore words shorter than 3 characters, and the word "The".
             //Use Linq to search all posts
             var result = _context.Post.Where(p => p.PostState == Enums.PostState.Published);
             //if no user input, return ALL posts
