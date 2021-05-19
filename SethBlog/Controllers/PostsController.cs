@@ -170,7 +170,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PostState")] Post post, IFormFile customFile)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,PostState")] Post post, IFormFile customFile, List<string> TagValues)
         {
             if (ModelState.IsValid)
             {
@@ -195,6 +195,14 @@ namespace SethBlog.Controllers
                     ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
                     ModelState.AddModelError("", "Your title is not unique enough, there is another title that is similar.");
                     return View(post);
+                }
+                foreach (var tag in TagValues)
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        Text = tag
+                    });
                 }
                 _context.Add(post);
                 await _context.SaveChangesAsync();
