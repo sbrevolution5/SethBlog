@@ -13,22 +13,31 @@
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span>|</span>
     }
     <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId" asp-route-page="@ViewData["FromPage"]">Back to List</a>@*Page number we came from?*@
-    <div class="container">
-        <header class="blog-post-header">
-            <h2 class="title mb-2">@Model.Title</h2>
-            <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span> | @if (Model.ReadTime is not null)
-            {
-                <span class="time">@Model.ReadTime min to read</span>
-            }
-            | <span class="comment">@Model.Comments.Count comments</span>
-            <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" />
-        </header>
+<div class="container">
+    <header class="blog-post-header">
+        <h2 class="title mb-2">@Model.Title</h2>
+        <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span> | @if (Model.ReadTime is not null)
+        {
+            <span class="time">@Model.ReadTime min to read</span>
+        }
+        | <span class="comment">@Model.Comments.Count comments</span>
+        <img class="img-fluid mb-2" src="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)" />
+    </header>
 
-        <div class="blog-post-body">
-            @Html.Raw(Model.Content)
-        </div>
-
+    <div class="blog-post-body">
+        @Html.Raw(Model.Content)
     </div>
+    <hr />
+    <div class="row">
+        <div class="col">Tags:</div>
+    </div>
+    <div class="row">
+        <div class="col">@foreach (var tag in Model.Tags) 
+        {
+            <a class="btn btn-outline-primary" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a> 
+        }</div>
+    </div>
+</div>
     <!--//container-->
     @*<h2>Comments:</h2>*@
     @* Give Logged in users the ability to add a new comment *@

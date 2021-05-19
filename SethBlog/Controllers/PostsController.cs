@@ -133,11 +133,12 @@ namespace SethBlog.Controllers
                 return NotFound();
             }
             ViewData["FromPage"] = fromPage;
-            
+
             var post = await _context.Post
                 .Include(p => p.Blog)
                 .Include(p => p.Comments)
                 .ThenInclude(c => c.Author)//Acts on the previous include
+                .Include(p => p.Tags)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             if (post == null)
             {
@@ -194,20 +195,26 @@ namespace SethBlog.Controllers
                 {
                     ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
                     ModelState.AddModelError("", "Your title is not unique enough, there is another title that is similar.");
+                    ViewData["TagValues"] = string.Join(",", TagValues);
                     return View(post);
                 }
+                var tagList = new List<Tag>();
                 foreach (var tag in TagValues)
                 {
-                    _context.Add(new Tag()
+                    var newTag = new Tag()
                     {
                         PostId = post.Id,
                         Text = tag
-                    });
+                    };
+                    _context.Add(newTag);
+                    tagList.Add(newTag);
                 }
+                post.Tags = tagList;
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
             }
+            ViewData["TagValues"] = string.Join(",", TagValues);
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
@@ -225,6 +232,7 @@ namespace SethBlog.Controllers
             {
                 return NotFound();
             }
+            //ViewData["TagValues"] = string.Join(",", TagValues);
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
@@ -234,7 +242,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,PublishedDate,Content,PostState")] Post post, IFormFile NewImage)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Created,Slug,PostImage,ContentType,Title,Abstract,PublishedDate,Content,PostState")] Post post, IFormFile NewImage, List<string> TagValues)
         {
             if (id != post.Id)
             {
@@ -270,6 +278,18 @@ namespace SethBlog.Controllers
                         }
                         post.Slug = newSlug;
                     }
+                    var tagList = new List<Tag>();
+                    foreach (var tag in TagValues)
+                    {
+                        var newTag = new Tag()
+                        {
+                            PostId = post.Id,
+                            Text = tag
+                        };
+                        _context.Add(newTag);
+                        tagList.Add(newTag);
+                    }
+                    post.Tags = tagList;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

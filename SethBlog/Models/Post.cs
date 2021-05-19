@@ -43,6 +43,7 @@ namespace SethBlog.Models
         [Display(Name ="Post Image")]
         public byte[] PostImage { get; set; }
         public string ContentType { get; set; }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
         //navigational property
         public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
         public virtual Blog Blog { get; set; }

@@ -1,18 +1,18 @@
 ﻿@model SethBlog.Models.Post
 @using SethBlog.Enums
 @{
-ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create";
 }
 
 <h1>Create</h1>
 @if (Model.BlogId > 0)
 {
-<h4>New Post for: @Model.Blog.Name</h4>
+    <h4>New Post for: @Model.Blog.Name</h4>
 }
 else
 {
 
-<h4>Post</h4>
+    <h4>Post</h4>
 }
 <hr />
 <div class="row">
@@ -21,16 +21,16 @@ else
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @if (Model.BlogId > 0)
             {
-            <input type="hidden" asp-for="BlogId" />
-            <label>Blog Name</label>
-            <input readonly="readonly" class="form-control" value="@Model.Blog.Name" />
+                <input type="hidden" asp-for="BlogId" />
+                <label>Blog Name</label>
+                <input readonly="readonly" class="form-control" value="@Model.Blog.Name" />
             }
             else
             {
-            <div class="form-group">
-                <label asp-for="BlogId" class="control-label"></label>
-                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
-            </div>
+                <div class="form-group">
+                    <label asp-for="BlogId" class="control-label"></label>
+                    <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
+                </div>
             }
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -50,14 +50,14 @@ else
             <div class="form-group">
                 <label asp-for="PostState" class="control-label"></label>
                 <select asp-for="PostState" class="form-control"
-                    asp-items="Html.GetEnumSelectList<PostState>();"></select>
+                        asp-items="Html.GetEnumSelectList<PostState>();"></select>
                 <span asp-validation-for="PostState" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PostImage"></label>
                 <div class="custom-file">
                     <input name="customFile" type="file" class="form-control-file custom-file-input" id="customFile"
-                        accept="image/*" />
+                           accept="image/*" />
                     <label class="control-label custom-file-label" for="customFile">Choose</label>
                 </div>
             </div>
@@ -66,20 +66,20 @@ else
                 <div class="row">
                     <div class="col">
                         <div class="row">
-                            <input type="text" class="form-control" id="TagEntry"/>
+                            <input type="text" class="form-control" id="TagEntry" />
                         </div>
                         <div class="row">
                             <div class="col">
-                                <button name="Add" type="button" class="btn btn-success btn-block">Add</button>
+                                <button onclick="AddTag()" name="Add" type="button" class="btn btn-success btn-block">Add</button>
                             </div>
                             <div class="col">
-                                <button type="button" class="btn btn-danger btn-block">Delete</button>
+                                <button onclick="DeleteTag()" name="Delete" type ="button" class="btn btn-danger btn-block">Delete</button>
 
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <select name="TagValues" id="TagList" multiple></select>
+                    <div class="col-6">
+                        <select class="w-100" name="TagValues" id="TagList" multiple></select>
                     </div>
                 </div>
             </div>
@@ -96,11 +96,12 @@ else
 
 
 @section Scripts {
-@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    $(".custom-file-input").on("change", function () {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-    });
-</script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/Tags.js"></script>
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
 }
