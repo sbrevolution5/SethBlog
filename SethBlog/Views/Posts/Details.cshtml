@@ -63,7 +63,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-md-3 d-sm-none">
+                        <div class="col-md-3 d-sm-none d-md-flex">
                             <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1 d-none d-md-flex" alt="{comment.Author.FullName} Image">
                         </div>
                         <div class="col-md-9 col-sm">
@@ -132,6 +132,7 @@
                 @* CARD END *@
             </div>
         }
+        <!--Modal ForeachLoop-->
             @foreach (var comment in Model.Comments.OrderByDescending(c=>c.Created))
             {
 
