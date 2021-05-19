@@ -53,7 +53,7 @@ namespace SethBlog.Services
         }
         private async Task SeedUsersAsync()
         {
-            if (_context.Users.Count() <= 2)
+            if (_context.Users.Count() >= 2)
             {
                 return;
             }
