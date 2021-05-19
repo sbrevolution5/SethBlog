@@ -45,3 +45,7 @@ body{
 .btn{
     height:auto;
 }
+.title-text{
+    font-weight: bold;
+    font-size:larger;
+}
