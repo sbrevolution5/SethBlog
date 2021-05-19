@@ -81,8 +81,8 @@ namespace SethBlog.Services
                 ImageData = await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
                 ContentType = "png",
             };
-            await _userManager.CreateAsync(adminUser, _configuration["ModPassword"]);
-            await _userManager.AddToRoleAsync(adminUser, BlogRole.Moderator.ToString());
+            await _userManager.CreateAsync(modUser, _configuration["ModPassword"]);
+            await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
         }
     }
 }
