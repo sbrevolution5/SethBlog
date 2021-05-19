@@ -159,8 +159,8 @@
                                         <input type="hidden" asp-for="@comment.AuthorId" />
                                         <input type="hidden" asp-for="@comment.ModeratorId" />
                                         <input type="hidden" asp-for="@comment.Created" />
-                                        <input type="hidden" asp-for="@comment.Created" />
-                                        @if (User.IsInRole("Moderator") || User.IsInRole("Administrator"))
+                                        
+                                        @if ((User.IsInRole("Moderator") || User.IsInRole("Administrator"))&& _userManager.GetUserId(User) != comment.AuthorId)
                                         {
                                             <div class="form-group">
 

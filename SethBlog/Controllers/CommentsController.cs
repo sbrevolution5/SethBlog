@@ -106,7 +106,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,AuthorId,ModeratorId,Body,Moderated,ModeratedBody,ModerationReason")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Created,PostId,AuthorId,ModeratorId,Body,Moderated,ModeratedBody,ModerationReason")] Comment comment)
         {
             var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
             var slug = post.Slug;
