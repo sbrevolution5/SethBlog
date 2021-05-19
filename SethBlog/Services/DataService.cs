@@ -53,23 +53,10 @@ namespace SethBlog.Services
         }
         private async Task SeedUsersAsync()
         {
-            if (_context.Users.Count() >= 2)
+            if (_context.Users.Count() > 2)
             {
                 return;
             }
-            var adminUser = new BlogUser()
-            {
-                Email = "sethbcoding@gmail.com",
-                UserName = "sethbcoding@gmail.com",
-                FirstName = "Seth",
-                LastName = "Burleson",
-                PhoneNumber = "919-763-4059",
-                EmailConfirmed = true, //Has to be forced for the admin
-                ImageData = await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
-                ContentType = "png",
-            };
-            await _userManager.CreateAsync(adminUser, _configuration["AdminPassword"]);
-            await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
             var modUser = new BlogUser()
             {
                 Email = "sbrevolution5.sb@gmail.com",
@@ -83,6 +70,20 @@ namespace SethBlog.Services
             };
             await _userManager.CreateAsync(modUser, _configuration["ModPassword"]);
             await _userManager.AddToRoleAsync(modUser, BlogRole.Moderator.ToString());
+            var adminUser = new BlogUser()
+            {
+                Email = "sethbcoding@gmail.com",
+                UserName = "sethbcoding@gmail.com",
+                FirstName = "Seth",
+                LastName = "Burleson",
+                PhoneNumber = "919-763-4059",
+                EmailConfirmed = true, //Has to be forced for the admin
+                ImageData = await _fileService.EncodeFileAsync(_configuration["DefaultUserImage"]),
+                ContentType = "png",
+            };
+            await _userManager.CreateAsync(adminUser, _configuration["AdminPassword"]);
+            await _userManager.AddToRoleAsync(adminUser, BlogRole.Administrator.ToString());
+            
         }
     }
 }
