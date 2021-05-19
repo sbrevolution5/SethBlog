@@ -128,7 +128,15 @@
                             </div>
                         </div>
                     </div>
+                }
+                @* CARD END *@
+            </div>
+        }
+            @foreach (var comment in Model.Comments.OrderByDescending(c=>c.Created))
+            {
 
+                @if (User.IsInRole("Moderator") || User.IsInRole("Administrator") || (comment.Moderated is null && _userManager.GetUserId(User) == comment.AuthorId))
+                {
                     <!-- Modal -->
                     <div class="modal fade" id="edit-@comment.Id" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
@@ -216,7 +224,6 @@
                         </div>
                     }
                 }
-            </div>
-        }
+            }
     </div>
 </article>
