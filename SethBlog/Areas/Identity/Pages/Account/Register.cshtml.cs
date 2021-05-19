@@ -128,7 +128,7 @@ namespace SethBlog.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $"Please confirm your account on <a href='https://thecoderscodex.herokuapp.com>The Coder's Codex</a> by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.  If you did not register an account on The Coder's Codex, please ignore this email.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
