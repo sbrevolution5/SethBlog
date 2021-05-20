@@ -27,7 +27,7 @@ $("form").on("submit", () => {
 
 if (tagValues != '') {
     let tagArray = tagValues.split(",")
-    for (var loop = 0; loop < tagArray.length; loop++) {
+    for (let loop = 0; loop < tagArray.length; loop++) {
         ReplaceTag(tagArray[loop], loop);
         index++;
     }

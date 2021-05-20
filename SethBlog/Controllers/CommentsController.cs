@@ -114,7 +114,6 @@ namespace SethBlog.Controllers
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -129,8 +128,16 @@ namespace SethBlog.Controllers
                     }
                     else
                     {
-                        //in case user edits a previously reviewed comment. 
+                        //TODO If user's comment is whitespace then tell them there was an error, not just redirect. 
+                        // Code from drew
+                        //if (!string.IsNullOrEmpty(comment.Body))
+                        //{
+                        //    comment.Created = DateTime.Now;
+                        //    _context.Add(comment);
+                        //    await _context.SaveChangesAsync();
                         comment.IsReviewed = false;
+                        //}
+                        //return RedirectToAction("Details", "Posts", new { slug });//in case user edits a previously reviewed comment. 
                     }
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
