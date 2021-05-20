@@ -26,7 +26,6 @@ namespace SethBlog.Models
         [DataType(DataType.Date)]
         [Display(Name = "Updated Date")]
         public DateTime? Updated { get; set; } //nullable because it will initially be null
-        //Todo: Most recent blog post date
 
         public byte[] BlogImage { get; set; }
         public string ContentType { get; set; }

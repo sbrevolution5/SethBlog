@@ -155,7 +155,6 @@ namespace SethBlog.Controllers
                 }
                 return RedirectToAction("Details", "Posts", new { Slug = slug });
             }
-            //TODO What are these for
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Post, "Id", "Abstract", comment.PostId);
