@@ -11,45 +11,51 @@
 <h1>Welcome Moderator</h1>
 
 <div class="comment-container">
-
-    @foreach (var comment in Model.OrderByDescending(c => c.Created))
+    @if (Model.Count() == 0)
     {
-        <div class="card shadow p-1 m-4 mb-2">
-            <div class="card-body">
-                <div class="row">
+        <h5>Thanks for your service! You have no new comments to moderate.</h5>
+    }
+    else
+    {
 
-                    <div class="col-2">
-                        <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
-                    </div>
-                    <div class="col-10">
-                        <div class="row">
+        @foreach (var comment in Model.OrderByDescending(c => c.Created))
+        {
+            <div class="card shadow p-1 m-4 mb-2">
+                <div class="card-body">
+                    <div class="row">
 
-                            <div class="col-7">
-
-                                <h4 class="card-title">
-                                    User: @comment.Author.FullName, Post: <a asp-controller="Posts" asp-action="Details" asp-route-slug="@comment.Post.Slug">@comment.Post.Title</a> 
-                                </h4>
-                            </div>
-                            <div class="col-5 text-right">
-                                <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
-                            </div>
+                        <div class="col-2">
+                            <img src="@_fileService.DecodeFile(comment.Author.ImageData, comment.Author.ContentType)" class="img-fluid comment-img p-1" alt="{comment.Author.FullName} Image">
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                @if (comment.ModeratedBody is not null)
-                                {
-                                    <p class="card-text">@comment.ModeratedBody</p>
-                                    <p class="text-muted">This comment was moderated because of @comment.ModerationReason</p>
-                                }
-                                <p>User Submitted Body:</p>
+                        <div class="col-10">
+                            <div class="row">
+
+                                <div class="col-7">
+
+                                    <h4 class="card-title">
+                                        User: @comment.Author.FullName, Post: <a asp-controller="Posts" asp-action="Details" asp-route-slug="@comment.Post.Slug">@comment.Post.Title</a>
+                                    </h4>
+                                </div>
+                                <div class="col-5 text-right">
+                                    <span class="date">@comment.Created.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    @if (comment.ModeratedBody is not null)
+                                    {
+                                        <p class="card-text">@comment.ModeratedBody</p>
+                                        <p class="text-muted">This comment was moderated because of @comment.ModerationReason</p>
+                                    }
+                                    <p>User Submitted Body:</p>
                                     <p class="card-text">@comment.Body</p>
+                                </div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
-            </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col">
@@ -58,10 +64,10 @@
                         <div class="col">
 
                             <div class="btn-group">
-                                
 
-                                    <a type="button" class="btn btn-sm btn-success" asp-action="MarkAsReviewed" asp-controller="Comments" asp-route-id="@comment.Id" asp-route-dash="true"> Mark as Reviewed</a>
-                                
+
+                                <a type="button" class="btn btn-sm btn-success" asp-action="MarkAsReviewed" asp-controller="Comments" asp-route-id="@comment.Id" asp-route-dash="true"> Mark as Reviewed</a>
+
                                 <button type="button" class="btn btn-sm btn-warning" data-toggle="modal"
                                         data-target="#edit-@comment.Id">
                                     Edit Comment
@@ -100,23 +106,24 @@
                                     <input type="hidden" asp-for="@comment.ModeratorId" />
                                     <input type="hidden" asp-for="@comment.Created" />
                                     <input type="hidden" asp-for="@comment.Created" />
-                                    
-                                        <div class="form-group">
+                                    <input type="hidden" value="true" name="commentDash" />
 
-                                            <label class="control-label">Original Body</label>
-                                            <textarea readonly class="form-control" asp-for="@comment.Body"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="@comment.ModeratedBody" class="control-label"></label>
-                                            <textarea asp-for="@comment.ModeratedBody" class="form-control"></textarea>
-                                            <span asp-validation-for="@comment.ModeratedBody" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="@comment.ModerationReason" class="control-label"></label>
-                                            <select asp-for="@comment.ModerationReason" class="form-control" asp-items="Html.GetEnumSelectList<ModerationReason>()"></select>
-                                            <span asp-validation-for="@comment.ModerationReason" class="text-danger"></span>
-                                        </div>
-                                    
+                                    <div class="form-group">
+
+                                        <label class="control-label">Original Body</label>
+                                        <textarea readonly class="form-control" asp-for="@comment.Body"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@comment.ModeratedBody" class="control-label"></label>
+                                        <textarea asp-for="@comment.ModeratedBody" class="form-control"></textarea>
+                                        <span asp-validation-for="@comment.ModeratedBody" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="@comment.ModerationReason" class="control-label"></label>
+                                        <select asp-for="@comment.ModerationReason" class="form-control" asp-items="Html.GetEnumSelectList<ModerationReason>()"></select>
+                                        <span asp-validation-for="@comment.ModerationReason" class="text-danger"></span>
+                                    </div>
+
                                     <div class="form-group">
                                         <input type="submit" value="Save" class="btn btn-primary" />
                                     </div>
@@ -155,6 +162,7 @@
                         </div>
                     </div>
                 }
-        </div>
+            </div>
+        }
     }
 </div>

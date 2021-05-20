@@ -154,6 +154,9 @@ namespace SethBlog.Controllers
                     }
                 }
                 if (commentDash)
+                {
+                    return RedirectToAction("Dashboard", "Comments");
+                }
                 return RedirectToAction("Details", "Posts", new { Slug = slug });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
