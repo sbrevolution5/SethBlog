@@ -12,10 +12,11 @@
     {
         <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> <span>|</span>
     }
-    <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId" asp-route-page="@ViewData["FromPage"]">Back to List</a>@*Page number we came from?*@
+    <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId" asp-route-page="@ViewData["FromPage"]">Back to This Blog's Index</a>
 <div class="container">
     <header class="blog-post-header">
         <h2 class="title mb-2">@Model.Title</h2>
+        <h5> A post in <a asp-action="BlogPostIndex" asp-route-id="@Model.BlogId">@Model.Blog.Name</a></h5>
         <span class="date">@string.Format("{0:MMM dd yyyy}", Model.PublishedDate)</span> | @if (Model.ReadTime is not null)
         {
             <span class="time">@Model.ReadTime min to read</span>

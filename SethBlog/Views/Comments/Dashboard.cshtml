@@ -154,8 +154,9 @@
                                 </div>
                                 <div class="modal-footer">
                                     <form asp-controller="Comments" asp-action="Delete">
+                                        <input type="hidden" value="true" name="dash" />
                                         <input type="hidden" value="@comment.Id" name="id" />
-                                        <input type="submit" value="Save" class="btn btn-danger" />
+                                        <input type="submit" value="Delete Comment" class="btn btn-danger" />
                                     </form>
                                 </div>
                             </div>

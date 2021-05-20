@@ -208,16 +208,19 @@ namespace SethBlog.Controllers
         }
         // POST: Comments/Delete/5
         [Authorize(Roles = "Administrator")]
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, bool dash)
         {
             var comment = await _context.Comments.FindAsync(id);
             var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
             var slug = post.Slug;
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
+            if (dash)
+            {
+                return RedirectToAction("Dashboard");
+            }
             return RedirectToAction("Details", "Posts", new { Slug = slug });
 
         }
