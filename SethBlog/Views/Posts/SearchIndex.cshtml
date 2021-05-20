@@ -26,7 +26,7 @@
                             <div class="row">
                                 <div class="meta">
 
-                                    <span class="date">@post.PublishedDate.ToString("MMM dd, yyyy")</span>@if (post.ReadTime is not
+                                    <span class="date">@string.Format("{0:MMM dd yyyy}", post.PublishedDate)</span>@if (post.ReadTime is not
 null)
                                     {
                                         <span class="time">@post.ReadTime min to read</span>

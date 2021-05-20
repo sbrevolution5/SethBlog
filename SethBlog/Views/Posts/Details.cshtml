@@ -16,7 +16,7 @@
 <div class="container">
     <header class="blog-post-header">
         <h2 class="title mb-2">@Model.Title</h2>
-        <span class="date">@Model.Created.ToString("MMM dd, yyyy")</span> | @if (Model.ReadTime is not null)
+        <span class="date">@string.Format("{0:MMM dd yyyy}", Model.PublishedDate)</span> | @if (Model.ReadTime is not null)
         {
             <span class="time">@Model.ReadTime min to read</span>
         }
