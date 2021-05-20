@@ -133,7 +133,7 @@ namespace SethBlog.Controllers
             tagText = tagText.ToLower();
             // get each post that has a matching tag
             var allPostIds = _context.Tags.Where(t => t.Text.ToLower() == tagText).Select(t => t.PostId);
-            var posts = await _context.Post.Where(p => allPostIds.Contains(p.Id)).OrderByDescending(p => p.Created).ToPagedListAsync(pageNumber, pageSize);
+            var posts = await _context.Post.Where(p => allPostIds.Contains(p.Id)).OrderByDescending(p => p.PublishedDate).ToPagedListAsync(pageNumber, pageSize);
             //var posts = await _context.Tags.Where(t => t.Text.ToLower().Contains(tagText.ToLower())).Select(t => t.Post).ToPagedListAsync(pageNumber,pageSize);
             // TODO
             //InvalidOperationException: An exception was thrown while attempting to evaluate a LINQ query parameter expression. See the inner exception for more information. To show additional information call 'DbContextOptionsBuilder.EnableSensitiveDataLogging'.
