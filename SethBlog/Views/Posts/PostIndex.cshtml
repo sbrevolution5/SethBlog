@@ -59,7 +59,7 @@
                         </div>
                     </div>
                         <div class="card-footer">
-                            <p class="text-muted">From Blog: @post.Blog.Name</p>
+                            <p class="text-muted">From Blog: <a asp-action="BlogPostIndex" asp-route-id="@post.Blog.Id">@post.Blog.Name</a></p>
                     @if (post.PostState != PostState.Published)
                     {
 
