@@ -305,10 +305,7 @@ namespace SethBlog.Controllers
                             Text = tag
                         };
                         _context.Add(newTag);
-                        //post.Tags.Add(newTag);
                     }
-                    //_context.Update(post);//Can't save post because of conflicting ID?
-                  //InvalidOperationException: The instance of entity type 'Post' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -322,7 +319,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("BlogPostIndex", new { id = post.BlogId });
+                return RedirectToAction("Details", new { slug = post.Slug});
             }
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
