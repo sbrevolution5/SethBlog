@@ -106,7 +106,7 @@ namespace SethBlog.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Created,PostId,AuthorId,ModeratorId,Body,Moderated,ModeratedBody,ModerationReason")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Created,PostId,AuthorId,ModeratorId,Body,Moderated,ModeratedBody,ModerationReason")] Comment comment, bool commentDash=false)
         {
             var post = await _context.Post.FirstOrDefaultAsync(p => p.Id == comment.PostId);
             var slug = post.Slug;
@@ -137,7 +137,7 @@ namespace SethBlog.Controllers
                         //    await _context.SaveChangesAsync();
                         comment.IsReviewed = false;
                         //}
-                        //return RedirectToAction("Details", "Posts", new { slug });//in case user edits a previously reviewed comment. 
+                        return RedirectToAction("Details", "Posts", new { slug });//in case user edits a previously reviewed comment. 
                     }
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
@@ -153,6 +153,7 @@ namespace SethBlog.Controllers
                         throw;
                     }
                 }
+                if (commentDash)
                 return RedirectToAction("Details", "Posts", new { Slug = slug });
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
