@@ -272,7 +272,8 @@ namespace SethBlog.Controllers
             {
                 try
                 {
-                    var dbTags = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
+                    //var dbTags = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
+                    var originalPost = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
                     post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                     post.Updated = DateTime.Now;
                     // Handles published date and updates parent blog's LatestPostDate
@@ -299,7 +300,7 @@ namespace SethBlog.Controllers
                         }
                         post.Slug = newSlug;
                     }
-                    _context.Tags.RemoveRange(post.Tags);
+                    _context.Tags.RemoveRange(originalPost.Tags);
                     post.Tags = new List<Tag>();
                     foreach (var tag in TagValues)
                     {

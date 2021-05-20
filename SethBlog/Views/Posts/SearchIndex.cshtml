@@ -20,7 +20,8 @@
                         </div>
                         <div class="col-9">
                             <div class="row">
-                                <h3 class="title mb-1"><a href="blog-post.html">@post.Title</a></h3>
+                                <h3 class="title mb-1"><a asp-controller="Posts" asp-action="Details"
+                                       asp-route-slug="@post.Slug">@post.Title</a></h3>
 
                             </div>
                             <div class="row">

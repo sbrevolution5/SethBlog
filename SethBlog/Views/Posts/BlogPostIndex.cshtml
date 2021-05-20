@@ -83,13 +83,13 @@
 
 
         }
-        <div class="row">
+        <div class="row text-center">
             <div class="col h3">
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
             </div>
         </div>
-        <div class="row">
-            <div class="col">
+        <div class="row text-center">
+            <div class="col justify-content-center">
                 @Html.PagedListPager(Model, page => Url.Action("BlogPostIndex", new
                 {
                     page = page,
