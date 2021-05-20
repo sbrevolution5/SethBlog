@@ -97,11 +97,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/Tags.js"></script>
     <script>
+        let tagValues = '@ViewData["TagValues"]';
         $(".custom-file-input").on("change", function () {
             var fileName = $(this).val().split("\\").pop();
             $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
         });
     </script>
+    <script src="~/js/Tags.js"></script>
 }

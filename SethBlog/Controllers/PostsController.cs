@@ -110,7 +110,7 @@ namespace SethBlog.Controllers
             var applicationDbContext = _context.Post.Include(p => p.Blog);
             return View(await applicationDbContext.ToListAsync());
         }
-        //Post: Search results
+        //Get: Search results
         //[HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> SearchIndex(string searchString, int? page) 
@@ -120,6 +120,24 @@ namespace SethBlog.Controllers
             ViewData["SearchString"] = searchString;
             // get results from our search service.
             var posts = await _searchService.SearchContent(searchString).ToPagedListAsync(pageNumber,pageSize);
+            //posts = await posts.ToListAsync();
+            return View(posts);
+        }
+        //GET: Tag index
+        [AllowAnonymous]
+        public async Task<IActionResult> TagIndex(string tagText, int? page)
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 5;
+            ViewData["TagText"] = tagText;
+            tagText = tagText.ToLower();
+            // get each post that has a matching tag
+            var allPostIds = _context.Tags.Where(t => t.Text.ToLower() == tagText).Select(t => t.PostId);
+            var posts = await _context.Post.Where(p => allPostIds.Contains(p.Id)).OrderByDescending(p => p.Created).ToPagedListAsync(pageNumber, pageSize);
+            //var posts = await _context.Tags.Where(t => t.Text.ToLower().Contains(tagText.ToLower())).Select(t => t.Post).ToPagedListAsync(pageNumber,pageSize);
+            // TODO
+            //InvalidOperationException: An exception was thrown while attempting to evaluate a LINQ query parameter expression. See the inner exception for more information. To show additional information call 'DbContextOptionsBuilder.EnableSensitiveDataLogging'.
+            //var posts = await _context.Post.Where(p => p.Tags.Text.Contains(tagText))//.ToPagedListAsync(pageNumber, pageSize);
             //posts = await posts.ToListAsync();
             return View(posts);
         }
@@ -227,12 +245,13 @@ namespace SethBlog.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Post.FindAsync(id);
+            var post = await _context.Post.Include(p => p.Tags).FirstOrDefaultAsync(p=> p.Id == id);
+
             if (post == null)
             {
                 return NotFound();
             }
-            //ViewData["TagValues"] = string.Join(",", TagValues);
+            ViewData["TagValues"] = string.Join(",", post.Tags.Select(t => t.Text));
             ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
             return View(post);
         }
@@ -253,6 +272,7 @@ namespace SethBlog.Controllers
             {
                 try
                 {
+                    var dbTags = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
                     post.ReadTime = _readTimeService.CalcReadTime(post.Content);
                     post.Updated = DateTime.Now;
                     // Handles published date and updates parent blog's LatestPostDate
@@ -274,11 +294,13 @@ namespace SethBlog.Controllers
                         if (!_slugService.IsUnique(newSlug))
                         {
                             ModelState.AddModelError("Title", "Your title is not unique enough, there is another title that is similar.");
+                            ViewData["TagValues"] = string.Join(",", TagValues);
                             return View(post);
                         }
                         post.Slug = newSlug;
                     }
-                    var tagList = new List<Tag>();
+                    _context.Tags.RemoveRange(post.Tags);
+                    post.Tags = new List<Tag>();
                     foreach (var tag in TagValues)
                     {
                         var newTag = new Tag()
@@ -287,10 +309,10 @@ namespace SethBlog.Controllers
                             Text = tag
                         };
                         _context.Add(newTag);
-                        tagList.Add(newTag);
+                        post.Tags.Add(newTag);
                     }
-                    post.Tags = tagList;
-                    _context.Update(post);
+                    _context.Update(post);//Can't save post because of conflicting ID?
+                  //InvalidOperationException: The instance of entity type 'Post' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
