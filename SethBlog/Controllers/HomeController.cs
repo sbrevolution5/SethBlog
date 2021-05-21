@@ -36,10 +36,33 @@ namespace SethBlog.Controllers
                     .Where(p => p.PostState == Enums.PostState.Published)
                     .OrderByDescending(p => p.PublishedDate))
                 .ToPagedListAsync(pageNumber,pageSize);
+            var allTags = await _context.Tags
+                .ToListAsync();
+            var tagNames = new List<string>();
+            var tagCounts = new List<int>();
+            //look at each tag,
+            foreach(var tag in allTags)
+            {
+            //if it is the first occurrence of the tag, add a new property with that tag and a count of one
+                if (!tagNames.Contains(tag.Text))
+                {
+                    tagNames.Add(tag.Text);
+                    tagCounts.Add(1);
+                }
+            // if it is already present, increase the count by one
+                else
+                {
+                    int index = tagNames.IndexOf(tag.Text);
+                    tagCounts[index]++;
+                }
+            }
+
             var viewModel = new HomepageViewModel()
             {
                 LatestPost = await _context.Post.OrderByDescending(p => p.PublishedDate).FirstOrDefaultAsync(p=> p.PublishedDate != null),
-                Blogs = allBlogs
+                Blogs = allBlogs,
+                TagNames = tagNames,
+                TagCounts = tagCounts
             };
             return View(viewModel);
         }

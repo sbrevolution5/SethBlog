@@ -11,5 +11,7 @@ namespace SethBlog.ViewModels
     {
         public Post LatestPost { get; set; }
         public IPagedList<Blog> Blogs { get; set; }
+        public List<String> TagNames { get; set; }
+        public List<int> TagCounts{ get; set; }
     }
 }
