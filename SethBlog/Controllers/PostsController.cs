@@ -267,24 +267,36 @@ namespace SethBlog.Controllers
             {
                 try
                 {
-                    //var dbTags = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
-                    var originalPost = await _context.Post.AsNoTracking().Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
-                    post.ReadTime = _readTimeService.CalcReadTime(post.Content);
-                    post.Updated = DateTime.Now;
+                    //new tracked "original post\
+                    var originalPost = await _context.Post.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
+
+                    originalPost.ReadTime = _readTimeService.CalcReadTime(originalPost.Content);
+                    originalPost.Updated = DateTime.Now;
                     // Handles published date and updates parent blog's LatestPostDate
                     if (post.PostState == PostState.Published && post.PublishedDate == null)
                     {
-                        post.PublishedDate = DateTime.Now;
-                        var blog = _context.Blog.First(b => b.Id == post.BlogId);
-                        blog.LatestPostDate = post.PublishedDate;
+                        originalPost.PublishedDate = DateTime.Now;
+                        var blog = _context.Blog.First(b => b.Id == originalPost.BlogId);
+                        blog.LatestPostDate = originalPost.PublishedDate;
+                    }
+                    else
+                    {
+                        originalPost.PublishedDate = post.PublishedDate;
+                        
                     }
                     if (NewImage is not null)
                     {
-                        post.PostImage = await _fileService.EncodeFileAsync(NewImage);
-                        post.ContentType = _fileService.RecordContentType(NewImage);
+                        originalPost.PostImage = await _fileService.EncodeFileAsync(NewImage);
+                        originalPost.ContentType = _fileService.RecordContentType(NewImage);
                     }
+                    else
+                    {
+                        originalPost.PostImage = post.PostImage;
+                        originalPost.ContentType = post.ContentType;
+                    }
+
                     var newSlug = _slugService.UrlFriendly(post.Title);
-                    if (post.Slug != newSlug)
+                    if (originalPost.Slug != newSlug)
                     {
 
                         if (!_slugService.IsUnique(newSlug))
@@ -293,19 +305,24 @@ namespace SethBlog.Controllers
                             ViewData["TagValues"] = string.Join(",", TagValues);
                             return View(post);
                         }
-                        post.Slug = newSlug;
+                        originalPost.Slug = newSlug;
                     }
                     _context.Tags.RemoveRange(originalPost.Tags);
-                    //post.Tags = new List<Tag>();
+
+
                     foreach (var tag in TagValues)
                     {
-                        var newTag = new Tag()
+                        _context.Add(new Tag()
                         {
                             PostId = post.Id,
                             Text = tag
-                        };
-                        _context.Add(newTag);
+                        });
                     }
+                    originalPost.Created = post.Created;
+                    originalPost.Title = post.Title;
+                    originalPost.Abstract = post.Abstract;
+                    originalPost.Content = post.Content;
+                    originalPost.PostState = post.PostState;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
