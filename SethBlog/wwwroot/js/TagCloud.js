@@ -3,7 +3,7 @@
 //var fill = d3.scale.category20();
 var myColors = d3.scaleSequential().domain([1,10]).range(["purple", "gray"])
 var words = cloudArray
-var width = 800;
+var width = 700;
 var height = 300;
 for (var i = 0; i < words.length; i++) {
     words[i].size = 10 + words[i].count * 9;
