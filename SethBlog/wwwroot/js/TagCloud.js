@@ -50,7 +50,7 @@ function draw(words) {
         .on("mouseover", function (d, i) {
             d3.select(this)
                 .attr("transform", function (d) {
-                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")scale(1.4)";
+                    return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")scale(1.2)";
                 })
             
         
