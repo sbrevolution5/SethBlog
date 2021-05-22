@@ -21,7 +21,7 @@
             @if (User.IsInRole("Administrator"))
             {
                 <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a> <span> | </span>
-                <a asp-controller="Blogs" asp-action="Edit">Edit Blog</a>
+                <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.FirstOrDefault()?.BlogId">Edit Blog</a>
             }
             <hr />
             @foreach (var post in Model)

@@ -132,7 +132,7 @@ namespace SethBlog.Controllers
             ViewData["TagText"] = tagText;
             tagText = tagText.ToLower();
             var allPostIds = _context.Tags.Where(t => t.Text.ToLower() == tagText).Select(t => t.PostId);
-            var posts = await _context.Post.Where(p => allPostIds.Contains(p.Id)).OrderByDescending(p => p.PublishedDate).ToPagedListAsync(pageNumber, pageSize);
+            var posts = await _context.Post.Where(p => allPostIds.Contains(p.Id)).Where(p => p.PostState == Enums.PostState.Published).OrderByDescending(p => p.PublishedDate).ToPagedListAsync(pageNumber, pageSize);
             
             return View(posts);
         }

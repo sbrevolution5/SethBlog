@@ -37,6 +37,7 @@ namespace SethBlog.Controllers
                     .OrderByDescending(p => p.PublishedDate))
                 .ToPagedListAsync(pageNumber,pageSize);
             var allTags = await _context.Tags
+                .Include(t =>t.Post).Where(t => t.Post.PostState == Enums.PostState.Published)
                 .ToListAsync();
             var tagNames = new List<string>();
             var tagCounts = new List<int>();
