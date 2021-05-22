@@ -53,6 +53,7 @@ namespace SethBlog.Controllers
                 //If user is not in authorized roles, do include unpublished
                 var blogPosts = await _context.Post.Where(p => p.BlogId == id && p.PostState == PostState.Published)
                     .Include(p => p.Comments)
+                    .Include(p => p.Blog)
                     .OrderByDescending(p => p.PublishedDate ?? p.Created)
                     .ToPagedListAsync(pageNumber, pageSize);
                 return View(blogPosts);

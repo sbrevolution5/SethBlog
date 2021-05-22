@@ -10,7 +10,8 @@
 }
 <section class="blog-list px-3 py-5 p-md-5">
     <div class="container">
-        <h1>@ViewData["BlogName"]</h1>
+        <h1 class="text-center">@ViewData["BlogName"]</h1>
+        <hr />
         @if (Model.Count() == 0)
         {
             <h4>Looks like this blog has no posts yet</h4>
@@ -18,12 +19,14 @@
         }
         else
         {
+            <img class="img-fluid card-img-custom" src="@_fileService.DecodeFile(Model.FirstOrDefault()?.Blog.BlogImage, Model.FirstOrDefault()?.Blog.ContentType)"/>
             @if (User.IsInRole("Administrator"))
             {
+                <hr />
                 <a asp-action="Create" asp-route-blogId="@Model.FirstOrDefault()?.BlogId">Create New</a> <span> | </span>
                 <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@Model.FirstOrDefault()?.BlogId">Edit Blog</a>
-            }
             <hr />
+            }
             @foreach (var post in Model)
             {
 
