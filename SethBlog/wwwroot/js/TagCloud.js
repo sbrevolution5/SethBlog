@@ -24,7 +24,7 @@ function draw(words) {
     d3.select("#tagCloud")
         .append("svg")
         .attr("class", "d-none")
-        .attr("class", "d-lg-inline")
+        .attr("class", "d-md-block")
         .attr("width", width)
         .attr("height", height)
         .attr("class", "tagCloud")
