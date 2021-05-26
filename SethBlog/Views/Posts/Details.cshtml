@@ -7,6 +7,9 @@
 @{
     ViewData["Title"] = @Html.DisplayFor(model => model.Title);
 }
+@section Meta{
+    <meta property="og:image" content="@_fileService.DecodeFile(Model.PostImage, Model.ContentType)">
+}
 <article class="blog-post px-3 py-3 p-md-3">
     @if (User.IsInRole("Administrator"))
     {
