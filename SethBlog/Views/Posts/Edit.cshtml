@@ -19,7 +19,7 @@
             <input type="hidden" asp-for="PostImage" />
             <input type="hidden" asp-for="ContentType" />
             <input type="hidden" asp-for="Slug" />
-            @*<input type="hidden" asp-for="PublishedDate" />*@
+            <input type="hidden" asp-for="PublishedDate" />
             <input type="hidden" asp-for="Created" />
             <div class="form-group">
                 <label asp-for="BlogId" class="control-label"></label>
@@ -30,12 +30,6 @@
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <p class="text-danger">THIS IS ONLY TO FIX PREVIOUS DATE ERRORS, FOR POSTS THAT WERE PREVIOUSLY MADE BUT PUBLISHED ON THIS SITE NOW</p>
-                <label asp-for="PublishedDate" class="control-label"></label>
-                <input asp-for="PublishedDate" class="form-control" />
-                <span asp-validation-for="PublishedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Abstract" class="control-label"></label>
