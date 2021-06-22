@@ -14,6 +14,7 @@ using SethBlog.Models;
 using SethBlog.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,6 +35,13 @@ namespace SethBlog
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(
                     Connection.GetConnectionString(Configuration)));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("DefaultPolicy",
+                    builder => builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod());
+            });
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -51,16 +59,20 @@ namespace SethBlog
             services.AddScoped<SearchService>();
             services.AddScoped<ReadTimeService>();
             services.AddSwaggerGen(c =>
-            c.SwaggerDoc("v1", new OpenApiInfo {
-                Title = "Blog API",
-                Version = "v1",
-                Description = "Infusing users with data via The Coder's Codex API",
-                Contact = new OpenApiContact {
-                    Email = "sethbcoding@gmail.com",
-                    Name = "Seth Burleson",
-                    Url = new System.Uri("https://www.linkedin.com/in/seth-a-burleson-a1555211a/")
+            {
+                c.IncludeXmlComments($"{Directory.GetCurrentDirectory()}/wwwroot/TheCodersCodex.xml",true);
+                c.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "Blog API",
+                    Version = "v1",
+                    Description = "Infusing users with data via The Coder's Codex API",
+                    Contact = new OpenApiContact {
+                        Email = "sethbcoding@gmail.com",
+                        Name = "Seth Burleson",
+                        Url = new System.Uri("https://www.linkedin.com/in/seth-a-burleson-a1555211a/")
                     }
-            }));
+
+                });
+                });
             
 
         }
@@ -79,6 +91,7 @@ namespace SethBlog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors("DefaultPolicy");
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

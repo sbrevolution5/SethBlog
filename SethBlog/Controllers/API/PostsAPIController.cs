@@ -22,6 +22,11 @@ namespace SethBlog.Controllers.API
         }
 
         // GET: api/PostsAPI
+        /// <summary>
+        /// Gets a number of most recent posts from the blog
+        /// </summary>
+        /// <param name="num">Number of posts to retrieve</param>
+        /// <returns>An array of Post objects</returns>
         [HttpGet("/GetTopXPosts/{num}")]
         public async Task<ActionResult<IEnumerable<Post>>> GetTopXPosts(int num)
         {
