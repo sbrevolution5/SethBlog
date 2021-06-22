@@ -60,7 +60,7 @@ namespace SethBlog
             services.AddScoped<ReadTimeService>();
             services.AddSwaggerGen(c =>
             {
-                c.IncludeXmlComments($"{Directory.GetCurrentDirectory()}/wwwroot/TheCodersCodex.xml",true);
+                c.IncludeXmlComments($"{Directory.GetCurrentDirectory()}/wwwroot/SethBlog.xml",true);
                 c.SwaggerDoc("v1", new OpenApiInfo {
                     Title = "Blog API",
                     Version = "v1",

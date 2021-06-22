@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SethBlog</name>
+    </assembly>
+    <members>
+        <member name="M:SethBlog.Controllers.API.PostsAPIController.GetTopXPosts(System.Int32)">
+            <summary>
+            Gets a number of most recent posts from the blog
+            </summary>
+            <param name="num">Number of posts to retrieve</param>
+            <returns>An array of Post objects</returns>
+        </member>
+        <member name="P:SethBlog.Models.Comment.ModeratedBody">
+            <summary>
+            What the moderator changed the body to
+            </summary>
+        </member>
+        <member name="M:SethBlog.Services.GmailEmailService.SendEmailAsync(System.String,System.String,System.String)">
+            <summary>
+            sends an email using gmail configured in appsettings.json
+            </summary> 
+            <param name ="email">Recipient email</param>
+            <param name="subject">Subject of email</param>
+            <param name="htmlMessage">Body of email</param>
+            <returns></returns>
+        </member>
+        <member name="M:SethBlog.Services.IFileService.EncodeFileAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            encode an image from an upload control
+            </summary>
+            <param name="image">Image from form</param>
+            <returns>byte array of image</returns>
+        </member>
+    </members>
+</doc>

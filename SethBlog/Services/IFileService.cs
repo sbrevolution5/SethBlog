@@ -11,7 +11,7 @@ namespace SethBlog.Services
         /// <summary>
         /// encode an image from an upload control
         /// </summary>
-        /// <param name="image">Image from form</param>
+        /// <param name="file">Image from form</param>
         /// <returns>byte array of image</returns>
         Task<byte[]> EncodeFileAsync(IFormFile file);
         //overload using filename from local server.
